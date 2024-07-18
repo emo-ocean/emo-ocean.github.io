@@ -92,7 +92,7 @@ if recv4[:3] != '221':
 
 > 官网查询后：
 
-![7OJK B84P8~LS0708XRW {7](https://github.com/user-attachments/assets/56261ff1-d3dd-4cdd-848a-20d7224bef22)
+![image](https://github.com/user-attachments/assets/c450cc41-c56b-41c0-a0c7-e1459f7760d9)
 
 > 登录邮箱，右上角setting->general->third party service（非谷歌浏览器按照左上角：设置-用户-第三方服务）并启用SMTP第三方服务，验证后得到16位校验码，替换为password即可
 ![@3WCM9R`GY G`TVTMBGXQJD](https://github.com/user-attachments/assets/3c3db3be-f0e9-480e-ab46-55235d36df47)
