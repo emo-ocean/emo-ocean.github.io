@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Thu, 18 Jul 2024 05:04:59 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>SMTP实验</title><link>https://emo-ocean.github.io/post/SMTP-shi-yan.html</link><description># Computer Network SMTP Lab&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Thu, 18 Jul 2024 05:10:58 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>SMTP实验</title><link>https://emo-ocean.github.io/post/SMTP-shi-yan.html</link><description># Computer Network SMTP Lab&#13;
 ### email：zehaiyu589@gmail.com （源码文章最后附有）&#13;
 ### programming assignment : [SMTP.pdf](https://github.com/user-attachments/files/16276898/SMTP.pdf)&#13;
-### download from 🥇 [https://media.pearsoncmg.com/ph/esm/ecs_kurose_compnetwork_8/cw/](url)&#13;
+### programming assignment and others from 🥇 https://media.pearsoncmg.com/ph/esm/ecs_kurose_compnetwork_8/cw/&#13;
 &#13;
 ## 程序大致流程 👍 &#13;
 &#13;

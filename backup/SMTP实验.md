@@ -1,7 +1,7 @@
 # Computer Network SMTP Lab
 ### email：zehaiyu589@gmail.com （源码文章最后附有）
 ### programming assignment : [SMTP.pdf](https://github.com/user-attachments/files/16276898/SMTP.pdf)
-### download from 🥇 [https://media.pearsoncmg.com/ph/esm/ecs_kurose_compnetwork_8/cw/](url)
+### programming assignment and others from 🥇 https://media.pearsoncmg.com/ph/esm/ecs_kurose_compnetwork_8/cw/
 
 ## 程序大致流程 👍 
 
