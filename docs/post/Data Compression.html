@@ -11,11 +11,14 @@
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="# 数据压缩
+## 源代码下载：[codes.zip](https://github.com/user-attachments/files/16844970/codes.zip)
+##   email：[zehaiyu589@gmail.com](mailto:zehaiyu589@gmail.com)
 
-## Huffman coding:
+
+## 1.Huffman coding:
  在哈夫曼编码中，首先会统计文件中各字符出现的次数来代表权重，而权重大的字符出现次数更多，用以更短的编码序列（也就是更靠近根节点的层次）可以让压缩后的数据规模更小
 
-
+首先声明数据类型并创建树
 ```python
 # 构建哈夫曼树
 from collections import Counter
@@ -49,7 +52,9 @@ def build_huffman_tree(text_build):
 
     return heap[0]
 
-
+```
+哈夫曼编码表即是根据数据中不同元素出现频率来生成树之后，树中每一个字符代表的编码
+```python
 # 创建哈夫曼编码表
 def build_codes_table(root_build):
     codes = {}
@@ -66,8 +71,12 @@ def build_codes_table(root_build):
 
     build_codes(root_build, '')
     return codes
+```
+形如：
+![image](https://github.com/user-attachments/assets/00824b59-fc1a-4177-b396-aa49990dd709)
 
-
+此处就是简单的将table中的字符与编码互换，得到二进制的压缩文件，也就是我们常说的zip或者rar文件
+```python
 # 压缩数据
 def huffman_compress(text_compress):
     root_compress = build_huffman_tree(text_compress)
@@ -91,51 +100,18 @@ def huffman_decompress(encoded_text, root_decompress):
             node = root_decompress
 
     return ''.join(decoded_text)
-
-
-# 从文件中读取文本数据，使用 utf-8 编码
-def read_text_from_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        return file.read()
-
-
-# 将数据写入文件，使用 utf-8 编码
-def write_to_file(data, file_path):
-    with open(file_path, 'w', encoding='utf-8') as file:
-        file.write(data)
-
-
-# 示例使用
-if __name__ == '__main__':
-    # 读取输入文件
-    input_text = read_text_from_file('source.txt')
-
-    # 压缩数据
-    compressed, codes_table, root = huffman_compress(input_text)
-
-    # 写入压缩后的数据和编码表到文件
-    write_to_file(compressed, 'compressed.txt')
-    write_to_file(str(codes_table), 'codes_table.txt')
-
-    # 从文件中读取压缩数据进行解压缩（这里为了演示，我们直接使用变量）
-    compressed_data = read_text_from_file('compressed.txt')
-
-    # 解压数据
-    decompressed = huffman_decompress(compressed_data, root)
-
-    # 写入解压缩后的数据到文件
-    write_to_file(decompressed, 'decompressed.txt')
-
-    print('Compression and decompression completed.')
-
-`。">
+```
+可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。">
 <meta property="og:title" content="Data Compression">
 <meta property="og:description" content="# 数据压缩
+## 源代码下载：[codes.zip](https://github.com/user-attachments/files/16844970/codes.zip)
+##   email：[zehaiyu589@gmail.com](mailto:zehaiyu589@gmail.com)
 
-## Huffman coding:
+
+## 1.Huffman coding:
  在哈夫曼编码中，首先会统计文件中各字符出现的次数来代表权重，而权重大的字符出现次数更多，用以更短的编码序列（也就是更靠近根节点的层次）可以让压缩后的数据规模更小
 
-
+首先声明数据类型并创建树
 ```python
 # 构建哈夫曼树
 from collections import Counter
@@ -169,7 +145,9 @@ def build_huffman_tree(text_build):
 
     return heap[0]
 
-
+```
+哈夫曼编码表即是根据数据中不同元素出现频率来生成树之后，树中每一个字符代表的编码
+```python
 # 创建哈夫曼编码表
 def build_codes_table(root_build):
     codes = {}
@@ -186,8 +164,12 @@ def build_codes_table(root_build):
 
     build_codes(root_build, '')
     return codes
+```
+形如：
+![image](https://github.com/user-attachments/assets/00824b59-fc1a-4177-b396-aa49990dd709)
 
-
+此处就是简单的将table中的字符与编码互换，得到二进制的压缩文件，也就是我们常说的zip或者rar文件
+```python
 # 压缩数据
 def huffman_compress(text_compress):
     root_compress = build_huffman_tree(text_compress)
@@ -211,44 +193,8 @@ def huffman_decompress(encoded_text, root_decompress):
             node = root_decompress
 
     return ''.join(decoded_text)
-
-
-# 从文件中读取文本数据，使用 utf-8 编码
-def read_text_from_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        return file.read()
-
-
-# 将数据写入文件，使用 utf-8 编码
-def write_to_file(data, file_path):
-    with open(file_path, 'w', encoding='utf-8') as file:
-        file.write(data)
-
-
-# 示例使用
-if __name__ == '__main__':
-    # 读取输入文件
-    input_text = read_text_from_file('source.txt')
-
-    # 压缩数据
-    compressed, codes_table, root = huffman_compress(input_text)
-
-    # 写入压缩后的数据和编码表到文件
-    write_to_file(compressed, 'compressed.txt')
-    write_to_file(str(codes_table), 'codes_table.txt')
-
-    # 从文件中读取压缩数据进行解压缩（这里为了演示，我们直接使用变量）
-    compressed_data = read_text_from_file('compressed.txt')
-
-    # 解压数据
-    decompressed = huffman_decompress(compressed_data, root)
-
-    # 写入解压缩后的数据到文件
-    write_to_file(decompressed, 'decompressed.txt')
-
-    print('Compression and decompression completed.')
-
-`。">
+```
+可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://emo-ocean.github.io/post/Data%20Compression.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/116006682?v=4">
@@ -320,8 +266,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody"><h1>数据压缩</h1>
-<h2>Huffman coding:</h2>
+<h2>源代码下载：<a href="https://github.com/user-attachments/files/16844970/codes.zip">codes.zip</a></h2>
+<h2>email：<a href="mailto:zehaiyu589@gmail.com">zehaiyu589@gmail.com</a></h2>
+<h2>1.Huffman coding:</h2>
 <p>在哈夫曼编码中，首先会统计文件中各字符出现的次数来代表权重，而权重大的字符出现次数更多，用以更短的编码序列（也就是更靠近根节点的层次）可以让压缩后的数据规模更小</p>
+<p>首先声明数据类型并创建树</p>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-c"># 构建哈夫曼树</span>
 <span class="pl-k">from</span> <span class="pl-s1">collections</span> <span class="pl-k">import</span> <span class="pl-v">Counter</span>
 <span class="pl-k">import</span> <span class="pl-s1">heapq</span>
@@ -352,10 +301,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <span class="pl-s1">merged</span>.<span class="pl-s1">right</span> <span class="pl-c1">=</span> <span class="pl-s1">node2</span>
         <span class="pl-s1">heapq</span>.<span class="pl-en">heappush</span>(<span class="pl-s1">heap</span>, <span class="pl-s1">merged</span>)
 
-    <span class="pl-k">return</span> <span class="pl-s1">heap</span>[<span class="pl-c1">0</span>]
-
-
-<span class="pl-c"># 创建哈夫曼编码表</span>
+    <span class="pl-k">return</span> <span class="pl-s1">heap</span>[<span class="pl-c1">0</span>]</pre></div>
+<p>哈夫曼编码表即是根据数据中不同元素出现频率来生成树之后，树中每一个字符代表的编码</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-c"># 创建哈夫曼编码表</span>
 <span class="pl-k">def</span> <span class="pl-en">build_codes_table</span>(<span class="pl-s1">root_build</span>):
     <span class="pl-s1">codes</span> <span class="pl-c1">=</span> {}
 
@@ -370,10 +318,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <span class="pl-en">build_codes</span>(<span class="pl-s1">node</span>.<span class="pl-s1">right</span>, <span class="pl-s1">current_code</span> <span class="pl-c1">+</span> <span class="pl-s">"1"</span>)
 
     <span class="pl-en">build_codes</span>(<span class="pl-s1">root_build</span>, <span class="pl-s">""</span>)
-    <span class="pl-k">return</span> <span class="pl-s1">codes</span>
-
-
-<span class="pl-c"># 压缩数据</span>
+    <span class="pl-k">return</span> <span class="pl-s1">codes</span></pre></div>
+<p>形如：<br>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/00824b59-fc1a-4177-b396-aa49990dd709"><img src="https://github.com/user-attachments/assets/00824b59-fc1a-4177-b396-aa49990dd709" alt="image" style="max-width: 100%;"></a></p>
+<p>此处就是简单的将table中的字符与编码互换，得到二进制的压缩文件，也就是我们常说的zip或者rar文件</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-c"># 压缩数据</span>
 <span class="pl-k">def</span> <span class="pl-en">huffman_compress</span>(<span class="pl-s1">text_compress</span>):
     <span class="pl-s1">root_compress</span> <span class="pl-c1">=</span> <span class="pl-en">build_huffman_tree</span>(<span class="pl-s1">text_compress</span>)
     <span class="pl-s1">codes_table_c</span> <span class="pl-c1">=</span> <span class="pl-en">build_codes_table</span>(<span class="pl-s1">root_compress</span>)
@@ -395,7 +344,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             <span class="pl-s1">decoded_text</span>.<span class="pl-en">append</span>(<span class="pl-s1">node</span>.<span class="pl-s1">char</span>)
             <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">root_decompress</span>
 
-    <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">decoded_text</span>)
+    <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">decoded_text</span>)</pre></div>
+<p>可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。LZ77算法用于识别数据中的重复模式，而哈夫曼编码则用于将这些模式转换为更短的位序列，从而实现压缩。<br>
+rRAR格式使用的是其专有的压缩算法，通常是基于LZ压缩算法的变体，如LZ77或LZMA（Lempel-Ziv-Markov chain Algorithm）。LZMA算法是一种更先进的压缩技术，它使用基于字典的压缩方法，而并非哈夫曼编码。</p>
+<h2>2.DEFLATE 与 LZMA</h2>
+<h3>那么接下来我们可以观察lz77算法与常规哈夫曼的不同之处</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/f3c25ba1-34e1-48c6-b0d5-36859e3644e4"><img src="https://github.com/user-attachments/assets/f3c25ba1-34e1-48c6-b0d5-36859e3644e4" alt="image" style="max-width: 100%;"></a><br>
+这里Python 标准库中提供了 zlib 模块，它实现了 DEFLATE 算法。我们可以调用该库并运行：</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">zlib</span>
 
 
 <span class="pl-c"># 从文件中读取文本数据，使用 utf-8 编码</span>
@@ -404,36 +360,39 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <span class="pl-k">return</span> <span class="pl-s1">file</span>.<span class="pl-en">read</span>()
 
 
-<span class="pl-c"># 将数据写入文件，使用 utf-8 编码</span>
-<span class="pl-k">def</span> <span class="pl-en">write_to_file</span>(<span class="pl-s1">data</span>, <span class="pl-s1">file_path</span>):
-    <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">file_path</span>, <span class="pl-s">'w'</span>, <span class="pl-s1">encoding</span><span class="pl-c1">=</span><span class="pl-s">'utf-8'</span>) <span class="pl-k">as</span> <span class="pl-s1">file</span>:
+<span class="pl-c"># 将字节数据写入文件（以二进制模式）</span>
+<span class="pl-k">def</span> <span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">data</span>, <span class="pl-s1">file_path</span>):
+    <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">file_path</span>, <span class="pl-s">'wb'</span>) <span class="pl-k">as</span> <span class="pl-s1">file</span>:
         <span class="pl-s1">file</span>.<span class="pl-en">write</span>(<span class="pl-s1">data</span>)
 
 
-<span class="pl-c"># 示例使用</span>
-<span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">"__main__"</span>:
-    <span class="pl-c"># 读取输入文件</span>
-    <span class="pl-s1">input_text</span> <span class="pl-c1">=</span> <span class="pl-en">read_text_from_file</span>(<span class="pl-s">'source.txt'</span>)
+<span class="pl-c"># 待压缩的数据（以字符串为例）</span>
+<span class="pl-s1">idata</span> <span class="pl-c1">=</span> <span class="pl-en">read_text_from_file</span>(<span class="pl-s">'source.txt'</span>)
 
-    <span class="pl-c"># 压缩数据</span>
-    <span class="pl-s1">compressed</span>, <span class="pl-s1">codes_table</span>, <span class="pl-s1">root</span> <span class="pl-c1">=</span> <span class="pl-en">huffman_compress</span>(<span class="pl-s1">input_text</span>)
 
-    <span class="pl-c"># 写入压缩后的数据和编码表到文件</span>
-    <span class="pl-en">write_to_file</span>(<span class="pl-s1">compressed</span>, <span class="pl-s">'compressed.txt'</span>)
-    <span class="pl-en">write_to_file</span>(<span class="pl-en">str</span>(<span class="pl-s1">codes_table</span>), <span class="pl-s">'codes_table.txt'</span>)
+<span class="pl-c"># 将数据转换为字节格式</span>
+<span class="pl-s1">data_bytes</span> <span class="pl-c1">=</span> <span class="pl-s1">idata</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)
 
-    <span class="pl-c"># 从文件中读取压缩数据进行解压缩（这里为了演示，我们直接使用变量）</span>
-    <span class="pl-s1">compressed_data</span> <span class="pl-c1">=</span> <span class="pl-en">read_text_from_file</span>(<span class="pl-s">'compressed.txt'</span>)
+<span class="pl-c"># 压缩数据，压缩级别范围从 0（不压缩）到 9（最大压缩）</span>
+<span class="pl-s1">compressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-en">compress</span>(<span class="pl-s1">data_bytes</span>, <span class="pl-s1">level</span><span class="pl-c1">=</span><span class="pl-c1">6</span>)
 
-    <span class="pl-c"># 解压数据</span>
-    <span class="pl-s1">decompressed</span> <span class="pl-c1">=</span> <span class="pl-en">huffman_decompress</span>(<span class="pl-s1">compressed_data</span>, <span class="pl-s1">root</span>)
+<span class="pl-c"># 输出压缩后的数据</span>
+<span class="pl-en">print</span>(<span class="pl-s">"压缩后的数据："</span>, <span class="pl-s1">compressed_data</span>)
+<span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">compressed_data</span>, <span class="pl-s">'deflate/deflate_com.bin'</span>)
 
-    <span class="pl-c"># 写入解压缩后的数据到文件</span>
-    <span class="pl-en">write_to_file</span>(<span class="pl-s1">decompressed</span>, <span class="pl-s">'decompressed.txt'</span>)
+<span class="pl-c"># 解压缩数据</span>
+<span class="pl-s1">decompressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-en">decompress</span>(<span class="pl-s1">compressed_data</span>)
 
-    <span class="pl-en">print</span>(<span class="pl-s">"Compression and decompression completed."</span>)
+<span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">decompressed_data</span>, <span class="pl-s">'deflate/deflate_decom.txt'</span>)
 
-`</pre></div></div>
+
+<span class="pl-c"># 检查解压缩后的数据是否与原始数据相同</span>
+<span class="pl-k">assert</span> <span class="pl-s1">idata</span> <span class="pl-c1">==</span> <span class="pl-s1">decompressed_data</span>.<span class="pl-en">decode</span>(<span class="pl-s">'utf-8'</span>), <span class="pl-s">"解压缩后的数据与原始数据不匹配！"</span></pre></div>
+<p>代码较为简单，需要注意的点时zlib.compress参数只支持字节类型而不支持str（data）类型，这同样意味着压缩后数据不能够以str形式存储到txt等文件中，需要存入例如bin的二进制文件并查看，也可以直接进行print，会打印出代表16进制数的转义字符：<br>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/49e36652-02e7-4367-818b-b2f5288d43be"><img src="https://github.com/user-attachments/assets/49e36652-02e7-4367-818b-b2f5288d43be" alt="image" style="max-width: 100%;"></a></p>
+<p>使用Hex Editor Neo查看文件内容也是同理：<br>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/3c37d0dc-302b-4699-9b51-844d2183845d"><img src="https://github.com/user-attachments/assets/3c37d0dc-302b-4699-9b51-844d2183845d" alt="image" style="max-width: 100%;"></a></p>
+<p>最后是rar的lzma算法，也可以在调库中使用，在此不进行赘述，一并附加在源代码下载链接中。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
