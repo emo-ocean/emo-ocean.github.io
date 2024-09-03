@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Tue, 03 Sep 2024 07:25:38 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>Data Compression</title><link>https://emo-ocean.github.io/post/Data%20Compression.html</link><description># 数据压缩&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Tue, 03 Sep 2024 07:36:21 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>Data Compression</title><link>https://emo-ocean.github.io/post/Data%20Compression.html</link><description># 数据压缩&#13;
 ## 源代码下载：[codes.zip](https://github.com/user-attachments/files/16844970/codes.zip)&#13;
 ##   email：[zehaiyu589@gmail.com](mailto:zehaiyu589@gmail.com)&#13;
 &#13;
@@ -90,6 +90,9 @@ def huffman_decompress(encoded_text, root_decompress):&#13;
 &#13;
     return ''.join(decoded_text)&#13;
 ```&#13;
+压缩后数据文件如下：&#13;
+![image](https://github.com/user-attachments/assets/9ba4d5a1-d611-431a-b5b3-f7d744136ca9)&#13;
+&#13;
 可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。</description><guid isPermaLink="true">https://emo-ocean.github.io/post/Data%20Compression.html</guid><pubDate>Fri, 16 Aug 2024 08:15:06 +0000</pubDate></item><item><title>SMTP实验</title><link>https://emo-ocean.github.io/post/SMTP-shi-yan.html</link><description># Computer Network SMTP Lab&#13;
 ### email：zehaiyu589@gmail.com （源码文章最后附有）&#13;
 ### programming assignment : [SMTP.pdf](https://github.com/user-attachments/files/16276898/SMTP.pdf)&#13;

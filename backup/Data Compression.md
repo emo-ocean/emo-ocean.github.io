@@ -89,6 +89,9 @@ def huffman_decompress(encoded_text, root_decompress):
 
     return ''.join(decoded_text)
 ```
+压缩后数据文件如下：
+![image](https://github.com/user-attachments/assets/9ba4d5a1-d611-431a-b5b3-f7d744136ca9)
+
 可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。LZ77算法用于识别数据中的重复模式，而哈夫曼编码则用于将这些模式转换为更短的位序列，从而实现压缩。
 rRAR格式使用的是其专有的压缩算法，通常是基于LZ压缩算法的变体，如LZ77或LZMA（Lempel-Ziv-Markov chain Algorithm）。LZMA算法是一种更先进的压缩技术，它使用基于字典的压缩方法，而并非哈夫曼编码。
  
@@ -147,4 +150,4 @@ assert idata == decompressed_data.decode('utf-8'), "解压缩后的数据与原�
 ![image](https://github.com/user-attachments/assets/3c37d0dc-302b-4699-9b51-844d2183845d)
 
 
-最后是rar的lzma算法，也可以在调库中使用，在此不进行赘述，一并附加在源代码下载链接中。
+最后是rar的lzma算法，也可以在调库中使用，生成数据压缩文件为xz类型，在此不进行赘述，一并附加在源代码下载链接中。
