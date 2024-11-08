@@ -1,4 +1,6 @@
+#  这里是我的博客网址：emo-ocean.github.io
 # Emo-Ocean's Blog :link: https://emo-ocean.github.io 
+## 上传关于手动实现数据压缩，计算机网络黑皮书smtp lab等实验记录
 ### :page_facing_up: [2](https://emo-ocean.github.io/tag.html) 
 ### :speech_balloon: 0 
 ### :hibiscus: 11442 
