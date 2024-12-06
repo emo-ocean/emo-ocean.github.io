@@ -284,28 +284,28 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <span class="pl-k">class</span> <span class="pl-v">Node</span>:
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-s1">char</span>, <span class="pl-s1">freq</span>):
-        <span class="pl-s1">self</span>.<span class="pl-s1">char</span> <span class="pl-c1">=</span> <span class="pl-s1">char</span>
-        <span class="pl-s1">self</span>.<span class="pl-s1">freq</span> <span class="pl-c1">=</span> <span class="pl-s1">freq</span>
-        <span class="pl-s1">self</span>.<span class="pl-s1">left</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
-        <span class="pl-s1">self</span>.<span class="pl-s1">right</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">char</span> <span class="pl-c1">=</span> <span class="pl-s1">char</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">freq</span> <span class="pl-c1">=</span> <span class="pl-s1">freq</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">left</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">right</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
 
     <span class="pl-c"># 定义比较函数，使得Node类可以在优先队列中排序</span>
     <span class="pl-k">def</span> <span class="pl-en">__lt__</span>(<span class="pl-s1">self</span>, <span class="pl-s1">other</span>):
-        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-s1">freq</span> <span class="pl-c1">&lt;</span> <span class="pl-s1">other</span>.<span class="pl-s1">freq</span>
+        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-c1">freq</span> <span class="pl-c1">&lt;</span> <span class="pl-s1">other</span>.<span class="pl-c1">freq</span>
 
 
 <span class="pl-k">def</span> <span class="pl-en">build_huffman_tree</span>(<span class="pl-s1">text_build</span>):
-    <span class="pl-s1">frequency</span> <span class="pl-c1">=</span> <span class="pl-v">Counter</span>(<span class="pl-s1">text_build</span>)
-    <span class="pl-s1">heap</span> <span class="pl-c1">=</span> [<span class="pl-v">Node</span>(<span class="pl-s1">char</span>, <span class="pl-s1">freq</span>) <span class="pl-k">for</span> <span class="pl-s1">char</span>, <span class="pl-s1">freq</span> <span class="pl-c1">in</span> <span class="pl-s1">frequency</span>.<span class="pl-en">items</span>()]
-    <span class="pl-s1">heapq</span>.<span class="pl-en">heapify</span>(<span class="pl-s1">heap</span>)
+    <span class="pl-s1">frequency</span> <span class="pl-c1">=</span> <span class="pl-en">Counter</span>(<span class="pl-s1">text_build</span>)
+    <span class="pl-s1">heap</span> <span class="pl-c1">=</span> [<span class="pl-en">Node</span>(<span class="pl-s1">char</span>, <span class="pl-s1">freq</span>) <span class="pl-k">for</span> <span class="pl-s1">char</span>, <span class="pl-s1">freq</span> <span class="pl-c1">in</span> <span class="pl-s1">frequency</span>.<span class="pl-c1">items</span>()]
+    <span class="pl-s1">heapq</span>.<span class="pl-c1">heapify</span>(<span class="pl-s1">heap</span>)
 
     <span class="pl-k">while</span> <span class="pl-en">len</span>(<span class="pl-s1">heap</span>) <span class="pl-c1">&gt;</span> <span class="pl-c1">1</span>:
-        <span class="pl-s1">node1</span> <span class="pl-c1">=</span> <span class="pl-s1">heapq</span>.<span class="pl-en">heappop</span>(<span class="pl-s1">heap</span>)
-        <span class="pl-s1">node2</span> <span class="pl-c1">=</span> <span class="pl-s1">heapq</span>.<span class="pl-en">heappop</span>(<span class="pl-s1">heap</span>)
-        <span class="pl-s1">merged</span> <span class="pl-c1">=</span> <span class="pl-v">Node</span>(<span class="pl-c1">None</span>, <span class="pl-s1">node1</span>.<span class="pl-s1">freq</span> <span class="pl-c1">+</span> <span class="pl-s1">node2</span>.<span class="pl-s1">freq</span>)
-        <span class="pl-s1">merged</span>.<span class="pl-s1">left</span> <span class="pl-c1">=</span> <span class="pl-s1">node1</span>
-        <span class="pl-s1">merged</span>.<span class="pl-s1">right</span> <span class="pl-c1">=</span> <span class="pl-s1">node2</span>
-        <span class="pl-s1">heapq</span>.<span class="pl-en">heappush</span>(<span class="pl-s1">heap</span>, <span class="pl-s1">merged</span>)
+        <span class="pl-s1">node1</span> <span class="pl-c1">=</span> <span class="pl-s1">heapq</span>.<span class="pl-c1">heappop</span>(<span class="pl-s1">heap</span>)
+        <span class="pl-s1">node2</span> <span class="pl-c1">=</span> <span class="pl-s1">heapq</span>.<span class="pl-c1">heappop</span>(<span class="pl-s1">heap</span>)
+        <span class="pl-s1">merged</span> <span class="pl-c1">=</span> <span class="pl-en">Node</span>(<span class="pl-c1">None</span>, <span class="pl-s1">node1</span>.<span class="pl-c1">freq</span> <span class="pl-c1">+</span> <span class="pl-s1">node2</span>.<span class="pl-c1">freq</span>)
+        <span class="pl-s1">merged</span>.<span class="pl-c1">left</span> <span class="pl-c1">=</span> <span class="pl-s1">node1</span>
+        <span class="pl-s1">merged</span>.<span class="pl-c1">right</span> <span class="pl-c1">=</span> <span class="pl-s1">node2</span>
+        <span class="pl-s1">heapq</span>.<span class="pl-c1">heappush</span>(<span class="pl-s1">heap</span>, <span class="pl-s1">merged</span>)
 
     <span class="pl-k">return</span> <span class="pl-s1">heap</span>[<span class="pl-c1">0</span>]</pre></div>
 <p>哈夫曼编码表即是根据数据中不同元素出现频率来生成树之后，树中每一个字符代表的编码</p>
@@ -317,11 +317,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <span class="pl-k">if</span> <span class="pl-s1">node</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>:
             <span class="pl-k">return</span>
 
-        <span class="pl-k">if</span> <span class="pl-s1">node</span>.<span class="pl-s1">char</span> <span class="pl-c1">is</span> <span class="pl-c1">not</span> <span class="pl-c1">None</span>:
-            <span class="pl-s1">codes</span>[<span class="pl-s1">node</span>.<span class="pl-s1">char</span>] <span class="pl-c1">=</span> <span class="pl-s1">current_code</span>
+        <span class="pl-k">if</span> <span class="pl-s1">node</span>.<span class="pl-c1">char</span> <span class="pl-c1"><span class="pl-c1">is</span> <span class="pl-c1">not</span></span> <span class="pl-c1">None</span>:
+            <span class="pl-s1">codes</span>[<span class="pl-s1">node</span>.<span class="pl-c1">char</span>] <span class="pl-c1">=</span> <span class="pl-s1">current_code</span>
 
-        <span class="pl-en">build_codes</span>(<span class="pl-s1">node</span>.<span class="pl-s1">left</span>, <span class="pl-s1">current_code</span> <span class="pl-c1">+</span> <span class="pl-s">"0"</span>)
-        <span class="pl-en">build_codes</span>(<span class="pl-s1">node</span>.<span class="pl-s1">right</span>, <span class="pl-s1">current_code</span> <span class="pl-c1">+</span> <span class="pl-s">"1"</span>)
+        <span class="pl-en">build_codes</span>(<span class="pl-s1">node</span>.<span class="pl-c1">left</span>, <span class="pl-s1">current_code</span> <span class="pl-c1">+</span> <span class="pl-s">"0"</span>)
+        <span class="pl-en">build_codes</span>(<span class="pl-s1">node</span>.<span class="pl-c1">right</span>, <span class="pl-s1">current_code</span> <span class="pl-c1">+</span> <span class="pl-s">"1"</span>)
 
     <span class="pl-en">build_codes</span>(<span class="pl-s1">root_build</span>, <span class="pl-s">""</span>)
     <span class="pl-k">return</span> <span class="pl-s1">codes</span></pre></div>
@@ -332,7 +332,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-k">def</span> <span class="pl-en">huffman_compress</span>(<span class="pl-s1">text_compress</span>):
     <span class="pl-s1">root_compress</span> <span class="pl-c1">=</span> <span class="pl-en">build_huffman_tree</span>(<span class="pl-s1">text_compress</span>)
     <span class="pl-s1">codes_table_c</span> <span class="pl-c1">=</span> <span class="pl-en">build_codes_table</span>(<span class="pl-s1">root_compress</span>)
-    <span class="pl-s1">encoded_text</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">codes_table_c</span>[<span class="pl-s1">char</span>] <span class="pl-k">for</span> <span class="pl-s1">char</span> <span class="pl-c1">in</span> <span class="pl-s1">text_compress</span>)
+    <span class="pl-s1">encoded_text</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">codes_table_c</span>[<span class="pl-s1">char</span>] <span class="pl-k">for</span> <span class="pl-s1">char</span> <span class="pl-c1">in</span> <span class="pl-s1">text_compress</span>)
     <span class="pl-k">return</span> <span class="pl-s1">encoded_text</span>, <span class="pl-s1">codes_table_c</span>, <span class="pl-s1">root_compress</span>
 
 
@@ -342,15 +342,15 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">root_decompress</span>
     <span class="pl-k">for</span> <span class="pl-s1">bit</span> <span class="pl-c1">in</span> <span class="pl-s1">encoded_text</span>:
         <span class="pl-k">if</span> <span class="pl-s1">bit</span> <span class="pl-c1">==</span> <span class="pl-s">'0'</span>:
-            <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">node</span>.<span class="pl-s1">left</span>
+            <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">node</span>.<span class="pl-c1">left</span>
         <span class="pl-k">else</span>:
-            <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">node</span>.<span class="pl-s1">right</span>
+            <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">node</span>.<span class="pl-c1">right</span>
 
-        <span class="pl-k">if</span> <span class="pl-s1">node</span>.<span class="pl-s1">left</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span> <span class="pl-c1">and</span> <span class="pl-s1">node</span>.<span class="pl-s1">right</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>:
-            <span class="pl-s1">decoded_text</span>.<span class="pl-en">append</span>(<span class="pl-s1">node</span>.<span class="pl-s1">char</span>)
+        <span class="pl-k">if</span> <span class="pl-s1">node</span>.<span class="pl-c1">left</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span> <span class="pl-c1">and</span> <span class="pl-s1">node</span>.<span class="pl-c1">right</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>:
+            <span class="pl-s1">decoded_text</span>.<span class="pl-c1">append</span>(<span class="pl-s1">node</span>.<span class="pl-c1">char</span>)
             <span class="pl-s1">node</span> <span class="pl-c1">=</span> <span class="pl-s1">root_decompress</span>
 
-    <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">decoded_text</span>)</pre></div>
+    <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">decoded_text</span>)</pre></div>
 <p>压缩后数据文件如下：<br>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/9ba4d5a1-d611-431a-b5b3-f7d744136ca9"><img src="https://github.com/user-attachments/assets/9ba4d5a1-d611-431a-b5b3-f7d744136ca9" alt="image" style="max-width: 100%;"></a></p>
 <p>可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。LZ77算法用于识别数据中的重复模式，而哈夫曼编码则用于将这些模式转换为更短的位序列，从而实现压缩。<br>
@@ -365,13 +365,13 @@ rRAR格式使用的是其专有的压缩算法，通常是基于LZ压缩算法�
 <span class="pl-c"># 从文件中读取文本数据，使用 utf-8 编码</span>
 <span class="pl-k">def</span> <span class="pl-en">read_text_from_file</span>(<span class="pl-s1">file_path</span>):
     <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">file_path</span>, <span class="pl-s">'r'</span>, <span class="pl-s1">encoding</span><span class="pl-c1">=</span><span class="pl-s">'utf-8'</span>) <span class="pl-k">as</span> <span class="pl-s1">file</span>:
-        <span class="pl-k">return</span> <span class="pl-s1">file</span>.<span class="pl-en">read</span>()
+        <span class="pl-k">return</span> <span class="pl-s1">file</span>.<span class="pl-c1">read</span>()
 
 
 <span class="pl-c"># 将字节数据写入文件（以二进制模式）</span>
 <span class="pl-k">def</span> <span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">data</span>, <span class="pl-s1">file_path</span>):
     <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">file_path</span>, <span class="pl-s">'wb'</span>) <span class="pl-k">as</span> <span class="pl-s1">file</span>:
-        <span class="pl-s1">file</span>.<span class="pl-en">write</span>(<span class="pl-s1">data</span>)
+        <span class="pl-s1">file</span>.<span class="pl-c1">write</span>(<span class="pl-s1">data</span>)
 
 
 <span class="pl-c"># 待压缩的数据（以字符串为例）</span>
@@ -379,23 +379,23 @@ rRAR格式使用的是其专有的压缩算法，通常是基于LZ压缩算法�
 
 
 <span class="pl-c"># 将数据转换为字节格式</span>
-<span class="pl-s1">data_bytes</span> <span class="pl-c1">=</span> <span class="pl-s1">idata</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)
+<span class="pl-s1">data_bytes</span> <span class="pl-c1">=</span> <span class="pl-s1">idata</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>)
 
 <span class="pl-c"># 压缩数据，压缩级别范围从 0（不压缩）到 9（最大压缩）</span>
-<span class="pl-s1">compressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-en">compress</span>(<span class="pl-s1">data_bytes</span>, <span class="pl-s1">level</span><span class="pl-c1">=</span><span class="pl-c1">6</span>)
+<span class="pl-s1">compressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-c1">compress</span>(<span class="pl-s1">data_bytes</span>, <span class="pl-s1">level</span><span class="pl-c1">=</span><span class="pl-c1">6</span>)
 
 <span class="pl-c"># 输出压缩后的数据</span>
 <span class="pl-en">print</span>(<span class="pl-s">"压缩后的数据："</span>, <span class="pl-s1">compressed_data</span>)
 <span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">compressed_data</span>, <span class="pl-s">'deflate/deflate_com.bin'</span>)
 
 <span class="pl-c"># 解压缩数据</span>
-<span class="pl-s1">decompressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-en">decompress</span>(<span class="pl-s1">compressed_data</span>)
+<span class="pl-s1">decompressed_data</span> <span class="pl-c1">=</span> <span class="pl-s1">zlib</span>.<span class="pl-c1">decompress</span>(<span class="pl-s1">compressed_data</span>)
 
 <span class="pl-en">write_bytes_to_file</span>(<span class="pl-s1">decompressed_data</span>, <span class="pl-s">'deflate/deflate_decom.txt'</span>)
 
 
 <span class="pl-c"># 检查解压缩后的数据是否与原始数据相同</span>
-<span class="pl-k">assert</span> <span class="pl-s1">idata</span> <span class="pl-c1">==</span> <span class="pl-s1">decompressed_data</span>.<span class="pl-en">decode</span>(<span class="pl-s">'utf-8'</span>), <span class="pl-s">"解压缩后的数据与原始数据不匹配！"</span></pre></div>
+<span class="pl-k">assert</span> <span class="pl-s1">idata</span> <span class="pl-c1">==</span> <span class="pl-s1">decompressed_data</span>.<span class="pl-c1">decode</span>(<span class="pl-s">'utf-8'</span>), <span class="pl-s">"解压缩后的数据与原始数据不匹配！"</span></pre></div>
 <p>代码较为简单，需要注意的点时zlib.compress参数只支持字节类型而不支持str（data）类型，这同样意味着压缩后数据不能够以str形式存储到txt等文件中，需要存入例如bin的二进制文件并查看，也可以直接进行print，会打印出代表16进制数的转义字符：<br>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/49e36652-02e7-4367-818b-b2f5288d43be"><img src="https://github.com/user-attachments/assets/49e36652-02e7-4367-818b-b2f5288d43be" alt="image" style="max-width: 100%;"></a></p>
 <p>使用Hex Editor Neo查看文件内容也是同理：<br>

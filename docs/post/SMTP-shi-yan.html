@@ -109,10 +109,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s1">mailPort</span> <span class="pl-c1">=</span> <span class="pl-c1">25</span>
 <span class="pl-s1">username</span> <span class="pl-c1">=</span> <span class="pl-s">"   "</span>
 <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s">"   "</span>
-<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-en">socket</span>(<span class="pl-v">AF_INET</span>, <span class="pl-v">SOCK_STREAM</span>)
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">connect</span>((<span class="pl-s1">mailserver</span>,<span class="pl-s1">mailPort</span>))
+<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-en">socket</span>(<span class="pl-c1">AF_INET</span>, <span class="pl-c1">SOCK_STREAM</span>)
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">connect</span>((<span class="pl-s1">mailserver</span>,<span class="pl-s1">mailPort</span>))
 
-<span class="pl-s1">recv</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">recv</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'220'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'220 reply not received from server.'</span>)</pre></div>
@@ -120,8 +120,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>发送"HELO"命令，开始与服务器的交互，服务器将返回状态码250（请求动作正确完成）。</p>
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">heloCommand</span> <span class="pl-c1">=</span> <span class="pl-s">'HELO <span class="pl-cce">\r</span><span class="pl-cce">\n</span>'</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">heloCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv1</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">heloCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv1</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv1</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv1</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)</pre></div>
@@ -129,28 +129,28 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>发送"AUTH LOGIN"命令，开始验证身份，服务器将返回状态码334（服务器等待用户输入验证信息），此处需要base64加密。</p>
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">loginCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"auth login<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">loginCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv0</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">loginCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv0</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv0</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv0</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'334'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'334 reply not received from server.'</span>)
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">base64</span>.<span class="pl-en">b64encode</span>(<span class="pl-s1">username</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)))
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">base64</span>.<span class="pl-en">b64encode</span>(<span class="pl-s1">password</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)))
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-en">encode</span>())</pre></div>
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">base64</span>.<span class="pl-c1">b64encode</span>(<span class="pl-s1">username</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>)))
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">base64</span>.<span class="pl-c1">b64encode</span>(<span class="pl-s1">password</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>)))
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-c1">encode</span>())</pre></div>
 <blockquote>
 <p>mail from &amp; mail to</p>
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">fromCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"MAIL FROM: &lt;sender@qq.com&gt;<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">fromCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv2</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">fromCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv2</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv2</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv2</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)
 
 <span class="pl-s1">rcptCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"RCPT TO: &lt;receiver@qq.com&gt;<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">rcptCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv3</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">rcptCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv3</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv3</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv3</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)</pre></div>
@@ -158,8 +158,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>发送"DATA"命令，表示即将发送邮件内容，服务器将返回状态码354（开始邮件输入，以"."结束）</p>
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">dataCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"DATA<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">dataCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv4</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">dataCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv4</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv4</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv4</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'354'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'354 reply not received from server.'</span>)</pre></div>
@@ -167,8 +167,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>发送邮件内容并quit断开与邮件服务器的连接。</p>
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">quitCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"QUIT<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">quitCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv5</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">quitCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv5</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv5</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv4</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'221'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'221 reply not received from server.'</span>)</pre></div>
@@ -203,7 +203,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"MIME-Version: 1.0<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"Content-Type: text/plain; charset=<span class="pl-cce">\"</span>utf-8<span class="pl-cce">\"</span><span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"Content-Transfer-Encoding: base64<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">headers</span>.<span class="pl-en">encode</span>())</pre></div>
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">headers</span>.<span class="pl-c1">encode</span>())</pre></div>
 <blockquote>
 <p>至此成功发送邮件，程序最终使用了465加密端口并对代码进行了优化<br>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/69c51506-3b32-4df7-b8f7-9dae44e9df1c"><img src="https://github.com/user-attachments/assets/69c51506-3b32-4df7-b8f7-9dae44e9df1c" alt="image" style="max-width: 100%;"></a></p>
@@ -225,14 +225,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s1">mailPort</span> <span class="pl-c1">=</span> <span class="pl-c1">465</span>
 <span class="pl-s1">username</span> <span class="pl-c1">=</span> <span class="pl-s">" yours@qq.com"</span>
 <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s">"   "</span>
-<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-en">socket</span>(<span class="pl-v">AF_INET</span>, <span class="pl-v">SOCK_STREAM</span>)
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">connect</span>((<span class="pl-s1">mailserver</span>,<span class="pl-s1">mailPort</span>))
+<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-en">socket</span>(<span class="pl-c1">AF_INET</span>, <span class="pl-c1">SOCK_STREAM</span>)
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">connect</span>((<span class="pl-s1">mailserver</span>,<span class="pl-s1">mailPort</span>))
 
 <span class="pl-c"># Wrap the socket with SSL</span>
-<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-s1">ssl</span>.<span class="pl-en">create_default_context</span>().<span class="pl-en">wrap_socket</span>(<span class="pl-s1">clientSocket</span>, <span class="pl-s1">server_hostname</span><span class="pl-c1">=</span><span class="pl-s1">mailserver</span>)
+<span class="pl-s1">clientSocket</span> <span class="pl-c1">=</span> <span class="pl-s1">ssl</span>.<span class="pl-c1">create_default_context</span>().<span class="pl-c1">wrap_socket</span>(<span class="pl-s1">clientSocket</span>, <span class="pl-s1">server_hostname</span><span class="pl-c1">=</span><span class="pl-s1">mailserver</span>)
 
 <span class="pl-c">#send message about tcp connection with mailserver</span>
-<span class="pl-s1">recv</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">recv</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'220'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'220 reply not received from server.'</span>)
@@ -240,49 +240,49 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <span class="pl-c"># Send HELO command and print server response.</span>
 <span class="pl-s1">heloCommand</span> <span class="pl-c1">=</span> <span class="pl-s">'HELO QQ<span class="pl-cce">\r</span><span class="pl-cce">\n</span>'</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">heloCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv1</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">heloCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv1</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv1</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv1</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)
 
 <span class="pl-s1">loginCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"AUTH LOGIN<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">loginCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv0</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">loginCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv0</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv0</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv0</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'334'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'334 reply not received from server.'</span>)
 
 <span class="pl-c"># send username</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">base64</span>.<span class="pl-en">b64encode</span>(<span class="pl-s1">username</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)))
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-en">encode</span>())
-<span class="pl-en">print</span>(<span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>())
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">base64</span>.<span class="pl-c1">b64encode</span>(<span class="pl-s1">username</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>)))
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-c1">encode</span>())
+<span class="pl-en">print</span>(<span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>())
 
 <span class="pl-c">#send password</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">base64</span>.<span class="pl-en">b64encode</span>(<span class="pl-s1">password</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>)))
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-en">encode</span>())
-<span class="pl-en">print</span>(<span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>())
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">base64</span>.<span class="pl-c1">b64encode</span>(<span class="pl-s1">password</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>)))
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s">"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>.<span class="pl-c1">encode</span>())
+<span class="pl-en">print</span>(<span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>())
 
 <span class="pl-c"># Send MAIL FROM command and print server response.</span>
 <span class="pl-s1">fromCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"MAIL FROM: &lt;yours@qq.com&gt;<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">fromCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv2</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">fromCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv2</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv2</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv2</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)
 
 <span class="pl-c"># Send RCPT TO command and print server response.</span>
 <span class="pl-s1">rcptCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"RCPT TO: &lt; receiver's mail  &gt;<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">rcptCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv3</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">rcptCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv3</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv3</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv3</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'250'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'250 reply not received from server.'</span>)
 
 <span class="pl-c"># Send DATA command and print server response.</span>
 <span class="pl-s1">dataCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"DATA<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">dataCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv4</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">dataCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv4</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv4</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv4</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'354'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'354 reply not received from server.'</span>)
@@ -297,26 +297,26 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"MIME-Version: 1.0<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"Content-Type: text/plain; charset=<span class="pl-cce">\"</span>utf-8<span class="pl-cce">\"</span><span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
 <span class="pl-s1">headers</span> <span class="pl-c1">+=</span> <span class="pl-s">"Content-Transfer-Encoding: base64<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">headers</span>.<span class="pl-en">encode</span>())
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">headers</span>.<span class="pl-c1">encode</span>())
 
 <span class="pl-c"># Encode the message content</span>
-<span class="pl-s1">encoded_msg</span> <span class="pl-c1">=</span> <span class="pl-s1">base64</span>.<span class="pl-en">b64encode</span>(<span class="pl-s1">msg</span>.<span class="pl-en">encode</span>(<span class="pl-s">'utf-8'</span>))
+<span class="pl-s1">encoded_msg</span> <span class="pl-c1">=</span> <span class="pl-s1">base64</span>.<span class="pl-c1">b64encode</span>(<span class="pl-s1">msg</span>.<span class="pl-c1">encode</span>(<span class="pl-s">'utf-8'</span>))
 
 <span class="pl-c"># Send the encoded message</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">encoded_msg</span> <span class="pl-c1">+</span> <span class="pl-s">b"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>)
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">encoded_msg</span> <span class="pl-c1">+</span> <span class="pl-s">b"<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>)
 
 <span class="pl-c"># Message ends with a single period.</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">endmsg</span>.<span class="pl-en">encode</span>())
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">endmsg</span>.<span class="pl-c1">encode</span>())
 
 <span class="pl-c"># Send QUIT command and get server response.</span>
 <span class="pl-s1">quitCommand</span> <span class="pl-c1">=</span> <span class="pl-s">"QUIT<span class="pl-cce">\r</span><span class="pl-cce">\n</span>"</span>
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">send</span>(<span class="pl-s1">quitCommand</span>.<span class="pl-en">encode</span>())
-<span class="pl-s1">recv5</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-en">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-en">decode</span>()
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">send</span>(<span class="pl-s1">quitCommand</span>.<span class="pl-c1">encode</span>())
+<span class="pl-s1">recv5</span> <span class="pl-c1">=</span> <span class="pl-s1">clientSocket</span>.<span class="pl-c1">recv</span>(<span class="pl-c1">1024</span>).<span class="pl-c1">decode</span>()
 <span class="pl-en">print</span>(<span class="pl-s1">recv5</span>)
 <span class="pl-k">if</span> <span class="pl-s1">recv4</span>[:<span class="pl-c1">3</span>] <span class="pl-c1">!=</span> <span class="pl-s">'221'</span>:
     <span class="pl-en">print</span>(<span class="pl-s">'221 reply not received from server.'</span>)
 
-<span class="pl-s1">clientSocket</span>.<span class="pl-en">close</span>()</pre></div></div>
+<span class="pl-s1">clientSocket</span>.<span class="pl-c1">close</span>()</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
