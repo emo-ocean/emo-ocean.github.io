@@ -160,7 +160,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <span class="pl-k">endmodule</span></pre></div>
 <p>wire : 连接电路，不存储数据，无驱动力且为组合逻辑，只能在assign左侧赋值，不能用于always赋值；<br>
-reg ： 可综合成register，latch甚至时是wire，可用于组合或时序逻辑。</p></div>
+reg ： 可综合成register，latch甚至时是wire，可用于组合或时序逻辑。</p>
+<h3>数与算数电路</h3>
+<p>半加器 全加器 行波进位加法器 超前进位加法器 乘法器</p>
+<p>1’s complement representation: 反码，负数则各位取反 0101的反码为1010，即为-5<br>
+2’s complement representation:补码，负数则各位取反，末尾加一，高位截断</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
@@ -219,11 +223,7 @@ console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
-cmButton=document.getElementById("cmButton");
-    span=document.createElement("span");
-    span.setAttribute("class","Counter");
-    span.innerHTML="1";
-    cmButton.appendChild(span);
+
 
 
 function openComments(){

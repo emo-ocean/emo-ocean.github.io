@@ -54,3 +54,12 @@ endmodule
 ```
 wire : 连接电路，不存储数据，无驱动力且为组合逻辑，只能在assign左侧赋值，不能用于always赋值；
 reg ： 可综合成register，latch甚至时是wire，可用于组合或时序逻辑。
+
+
+### 数与算数电路
+半加器 全加器 行波进位加法器 超前进位加法器 乘法器
+
+1’s complement representation: 反码，负数则各位取反 0101的反码为1010，即为-5
+2’s complement representation:补码，负数则各位取反，末尾加一，高位截断
+
+
