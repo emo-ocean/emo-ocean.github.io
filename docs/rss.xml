@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Wed, 09 Jul 2025 04:37:13 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>Digital Logic with Verilog Design</title><link>https://emo-ocean.github.io/post/Digital%20Logic%20with%20Verilog%20Design.html</link><description>## 逻辑电路
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Wed, 09 Jul 2025 04:45:00 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>Digital Logic with Verilog Design</title><link>https://emo-ocean.github.io/post/Digital%20Logic%20with%20Verilog%20Design.html</link><description>## 逻辑电路
 
-###逻辑门
+### 逻辑门
 
 逻辑门御三家：
 

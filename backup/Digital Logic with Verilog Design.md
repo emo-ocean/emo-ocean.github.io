@@ -1,6 +1,6 @@
 ## 逻辑电路
 
-###逻辑门
+### 逻辑门
 
 逻辑门御三家：
 
@@ -38,4 +38,19 @@
 
 ### 门级原语
 
-Gate Level Primitives, Verilog中用来描述常用逻辑门的代码。
+Gate Level Primitives, Verilog中用来描述常用逻辑门的代码:
+
+```verilog
+module example1(x1,x2,s,f):
+  input x1,x2,s;
+  output f;
+
+  not(k,s);  //k = ~s;
+  and(g,k,x1);  //g = k and x1;
+  and(h,s,x2);
+  or(f,g,h);
+
+endmodule
+```
+wire : 连接电路，不存储数据，无驱动力且为组合逻辑，只能在assign左侧赋值，不能用于always赋值；
+reg ： 可综合成register，latch甚至时是wire，可用于组合或时序逻辑。
