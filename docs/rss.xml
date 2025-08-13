@@ -1,2 +1,128 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Tue, 12 Aug 2025 16:32:43 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Emo-Ocean's Blog</title><link>https://emo-ocean.github.io</link><description>Exploring Concepts and Innovations</description><copyright>Emo-Ocean's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/116006682?v=4</url><title>avatar</title><link>https://emo-ocean.github.io</link></image><lastBuildDate>Wed, 13 Aug 2025 16:27:50 +0000</lastBuildDate><managingEditor>Emo-Ocean's Blog</managingEditor><ttl>60</ttl><webMaster>Emo-Ocean's Blog</webMaster><item><title>Vivado Timing Summary</title><link>https://emo-ocean.github.io/post/Vivado%20Timing%20Summary.html</link><description>## 亚稳态
+
+### 1.概念
+亚稳态是指触发器无法在某个规定时间内达到一个确定的状态,当一个触发器进入亚稳态时，既无法预测该单元的输出电平，也无法预测何时输出才能稳定在某个正确的电平上。</description><guid isPermaLink="true">https://emo-ocean.github.io/post/Vivado%20Timing%20Summary.html</guid><pubDate>Wed, 09 Jul 2025 09:21:05 +0000</pubDate></item><item><title>Digital Logic with Verilog Design</title><link>https://emo-ocean.github.io/post/Digital%20Logic%20with%20Verilog%20Design.html</link><description>## 逻辑电路
+
+### 逻辑门
+
+逻辑门御三家：
+
+&lt;img width='340' height='98' alt='Image' src='https://github.com/user-attachments/assets/f430aa6f-b9d1-4058-89ef-58f2fa1aff11' /&gt;
+
+其他门电路均可由御三家来实现，例如异或门：
+
+&lt;img width='611' height='380' alt='Image' src='https://github.com/user-attachments/assets/e53fe675-c735-4401-a4e4-3ba987cdd772' /&gt;
+
+其余三个只需要已有门前加非即可：
+
+&lt;img width='362' height='115' alt='Image' src='https://github.com/user-attachments/assets/829adac3-f65d-4c6b-b755-ca63efbb726d' /&gt;
+
+
+### 布尔代数
+用来描述逻辑电路的代数方法，所有变量值非0即1
+
+运算律太多了自己学去，证明方法也在内：https://www.geeksforgeeks.org/digital-logic/boolean-algebra/
+甚至存在一些布尔运算计算器：https://www.boolean-algebra.com/
+时至今日此类运算可以很快通过ai或计算器得到答案，但毕竟是很底层的逻辑层面的计算，希望除了会画真值表之外还会使用venn图或其他逻辑证明过程来对其进行验证。</description><guid isPermaLink="true">https://emo-ocean.github.io/post/Digital%20Logic%20with%20Verilog%20Design.html</guid><pubDate>Wed, 09 Jul 2025 04:05:59 +0000</pubDate></item><item><title>Data Compression</title><link>https://emo-ocean.github.io/post/Data%20Compression.html</link><description># 数据压缩&#13;
+## 源代码下载：[codes.zip](https://github.com/user-attachments/files/16844970/codes.zip)&#13;
+##   email：[zehaiyu589@gmail.com](mailto:zehaiyu589@gmail.com)&#13;
+&#13;
+&#13;
+## 1.Huffman coding:&#13;
+ 在哈夫曼编码中，首先会统计文件中各字符出现的次数来代表权重，而权重大的字符出现次数更多，用以更短的编码序列（也就是更靠近根节点的层次）可以让压缩后的数据规模更小&#13;
+&#13;
+首先声明数据类型并创建树&#13;
+```python&#13;
+# 构建哈夫曼树&#13;
+from collections import Counter&#13;
+import heapq&#13;
+&#13;
+&#13;
+class Node:&#13;
+    def __init__(self, char, freq):&#13;
+        self.char = char&#13;
+        self.freq = freq&#13;
+        self.left = None&#13;
+        self.right = None&#13;
+&#13;
+    # 定义比较函数，使得Node类可以在优先队列中排序&#13;
+    def __lt__(self, other):&#13;
+        return self.freq &lt; other.freq&#13;
+&#13;
+&#13;
+def build_huffman_tree(text_build):&#13;
+    frequency = Counter(text_build)&#13;
+    heap = [Node(char, freq) for char, freq in frequency.items()]&#13;
+    heapq.heapify(heap)&#13;
+&#13;
+    while len(heap) &gt; 1:&#13;
+        node1 = heapq.heappop(heap)&#13;
+        node2 = heapq.heappop(heap)&#13;
+        merged = Node(None, node1.freq + node2.freq)&#13;
+        merged.left = node1&#13;
+        merged.right = node2&#13;
+        heapq.heappush(heap, merged)&#13;
+&#13;
+    return heap[0]&#13;
+&#13;
+```&#13;
+哈夫曼编码表即是根据数据中不同元素出现频率来生成树之后，树中每一个字符代表的编码&#13;
+```python&#13;
+# 创建哈夫曼编码表&#13;
+def build_codes_table(root_build):&#13;
+    codes = {}&#13;
+&#13;
+    def build_codes(node, current_code):&#13;
+        if node is None:&#13;
+            return&#13;
+&#13;
+        if node.char is not None:&#13;
+            codes[node.char] = current_code&#13;
+&#13;
+        build_codes(node.left, current_code + '0')&#13;
+        build_codes(node.right, current_code + '1')&#13;
+&#13;
+    build_codes(root_build, '')&#13;
+    return codes&#13;
+```&#13;
+形如：&#13;
+![image](https://github.com/user-attachments/assets/00824b59-fc1a-4177-b396-aa49990dd709)&#13;
+&#13;
+此处就是简单的将table中的字符与编码互换，得到二进制的压缩文件，也就是我们常说的zip或者rar文件&#13;
+```python&#13;
+# 压缩数据&#13;
+def huffman_compress(text_compress):&#13;
+    root_compress = build_huffman_tree(text_compress)&#13;
+    codes_table_c = build_codes_table(root_compress)&#13;
+    encoded_text = ''.join(codes_table_c[char] for char in text_compress)&#13;
+    return encoded_text, codes_table_c, root_compress&#13;
+&#13;
+&#13;
+# 解压数据&#13;
+def huffman_decompress(encoded_text, root_decompress):&#13;
+    decoded_text = []&#13;
+    node = root_decompress&#13;
+    for bit in encoded_text:&#13;
+        if bit == '0':&#13;
+            node = node.left&#13;
+        else:&#13;
+            node = node.right&#13;
+&#13;
+        if node.left is None and node.right is None:&#13;
+            decoded_text.append(node.char)&#13;
+            node = root_decompress&#13;
+&#13;
+    return ''.join(decoded_text)&#13;
+```&#13;
+压缩后数据文件如下：&#13;
+![image](https://github.com/user-attachments/assets/9ba4d5a1-d611-431a-b5b3-f7d744136ca9)&#13;
+&#13;
+可值得一提的是现在使用的压缩工具中，ZIP格式通常使用DEFLATE算法，这是一种结合了LZ77算法和哈夫曼编码的压缩方法。</description><guid isPermaLink="true">https://emo-ocean.github.io/post/Data%20Compression.html</guid><pubDate>Fri, 16 Aug 2024 08:15:06 +0000</pubDate></item><item><title>SMTP实验</title><link>https://emo-ocean.github.io/post/SMTP-shi-yan.html</link><description># Computer Network SMTP Lab&#13;
+### email：zehaiyu589@gmail.com （源码文章最后附有）&#13;
+### programming assignment : [SMTP.pdf](https://github.com/user-attachments/files/16276898/SMTP.pdf)&#13;
+### programming assignment and others from 🥇 https://media.pearsoncmg.com/ph/esm/ecs_kurose_compnetwork_8/cw/&#13;
+&#13;
+## 程序大致流程 👍 &#13;
+&#13;
+&gt; 建立TCP连接。</description><guid isPermaLink="true">https://emo-ocean.github.io/post/SMTP-shi-yan.html</guid><pubDate>Thu, 18 Jul 2024 04:49:03 +0000</pubDate></item></channel></rss>
