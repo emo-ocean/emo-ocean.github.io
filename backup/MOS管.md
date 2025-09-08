@@ -18,6 +18,12 @@ mos管大体分为增强型和耗尽型，两种类型又分别可分为p沟道�
 
 https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e
 
+<iframe src="https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e
+" 
+        width="600" height="400" 
+        frameborder="0" 
+        allowfullscreen>
+</iframe>
 
 
 
