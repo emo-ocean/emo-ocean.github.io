@@ -105,7 +105,7 @@ RTL级故障注入直接作用在硬件描述语言（Verilog/VHDL/Chisel）里�
 <h2>需求整理：</h2>
 <p>系统级仿真（System-Level Simulation, SLS）抽象层次高，仿真速度快，可处理完整操作系统与应用程序，却不够精确，不可以用于验证具体硬件逻辑，无法捕捉低层次电路问题；RTL级仿真（Register Transfer Level Simulation）抽象层次低，精确至能够验证硬件功能与时序，可以发现系统级仿真无法发现的低级问题，可却面临仿真速度慢（尤其是多核复杂设计）、不适合大规模系统级性能探索等缺陷。</p>
 <h2>综合需求报告</h2>
-<p>研发多核处理器软错误故障混合注入平台（hybrid FI）：对系统中每个组件可以动态选择注入级别（RTL / microarch / none），并在一次仿真/实验流程中对不同组件以不同级别注入、甚至在运行时切换注入策略。采用模块化设计，将框架分解为若干相对独立的子模块，总体组件包括Gem5主仿真器，RTL组件子系统，错误注入管理器（Fault Injection Manager），注入实践表（Injection Event Scheduler）。</p>
+<p>研发多核处理器软错误故障混合注入平台（hybrid FI）：对系统中每个组件可以动态选择注入级别（RTL / microarch / none），并在一次仿真/实验流程中对不同组件以不同级别注入。采用模块化设计，将框架分解为若干相对独立的子模块，总体组件包括Gem5主仿真器，RTL组件子系统，错误注入管理器（Fault Injection Manager），注入实践表（Injection Event Scheduler）。</p>
 <p>采用模块化设计，将框架分解为若干相对独立的子模块，总体组件包括：</p>
 <p><strong>1. Gem5 主仿真器</strong>（系统级、OS、内存、I/O）：运行应用，负责调度和系统级事件。</p>
 <p><strong>2. RTL 组件子系统</strong>（Verilator/FPGA 模块）：以子进程或嵌入模块形式运行（gem5+RTL 框架常见实现），对外暴露同步接口（cycle-sync、mem transactions、control commands）。</p>
