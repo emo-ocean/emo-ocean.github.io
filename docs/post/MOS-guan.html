@@ -90,7 +90,46 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 若N连接到电源正极，P连接到电源负极，电子更加无法流通，耗尽区面积会增大，电流停止流动，称为反向偏置。<br>
 形如：+ N P -</p>
 <p>mos管大体分为增强型和耗尽型，两种类型又分别可分为p沟道和n沟道，因此共四种类型，大致生成建模如下，生成源码也非常简单，设定p代表的掺杂物为橙色，n对应的是蓝色：</p>
-<p><a href="https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e">https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e</a></p></div>
+<p><a href="https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e">https://github.com/user-attachments/assets/52e84a7f-cd70-4fb9-be79-6c81d279841e</a></p>
+<p>化学知识补充：</p>
+<ol>
+<li>价电子的定义<br>
+价电子 = 原子最外层（能级最高层）的电子，能参与成键和化学反应。<br>
+对主族元素来说，就是 最外层 s 和 p 轨道上的电子。</li>
+</ol>
+<p>例子：<br>
+磷 (P, 1s²2s²2p⁶3s²3p³)，价电子是 3s²3p³ → 一共 5 个。<br>
+氧 (O, 1s²2s²2p⁴)，价电子是 2s²2p⁴ → 一共 6 个。<br>
+所以，价电子就是“化学键的原材料”。</p>
+<ol start="2">
+<li>
+<p>杂化的本质<br>
+杂化 = 数学上的轨道线性组合，即用一组正交的“新轨道”来替代原本的 s, p, d。<br>
+目的：解释实验观察到的分子几何形状。<br>
+例如：碳原子理论上只能形成 2 个键（2 个单电子 p），但实际 CH₄ 是 4 个等价的 C–H 键 → 这只能通过 sp³ 杂化解释。</p>
+</li>
+<li>
+<p>三角双锥和正八面体如何产生？<br>
+我们用 VSEPR（价层电子对互斥）+ 杂化轨道组合来理解。<br>
+(1) 三角双锥 (sp³d)<br>
+需要 5 个等价的轨道。<br>
+来自：1 个 s + 3 个 p + 1 个 d → sp³d 杂化。<br>
+这 5 个轨道指向一个三角双锥：<br>
+3 个轨道在同一平面上，120° 分布（赤道位置）。<br>
+2 个轨道在轴向，垂直于平面（90°）。<br>
+应用：PCl₅, SF₄。</p>
+</li>
+</ol>
+<p>(2) 正八面体 (sp³d²)<br>
+需要 6 个等价的轨道。<br>
+来自：1 个 s + 3 个 p + 2 个 d → sp³d² 杂化。<br>
+这 6 个轨道指向正八面体的 6 个顶点：<br>
+相邻轨道夹角 90°。<br>
+应用：PF₆⁻, SF₆。</p>
+<p>By the way这个时候就有人问了，磷：基态是 3s² 3p³ ，氯：基态是 3s² 3p⁵<br>
+👉 价层都没有 3d 电子在参与，那为什么我们还能说 PCl₅ 是 sp³d 杂化呢？</p>
+<p>因为你们被高中课本易于理解的说法蒙蔽了双眼！😎😎😎</p>
+<p>PCl₅ 被说成 sp³d 杂化，并不是因为 P 的 3d 真正参与成键，而是因为分子需要 5 个等价成键方向（VSEPR → 三角双锥），所以用“sp³d 杂化”来描述是一种 几何模型上的近似。在现代量子化学的严格描述里，3d 贡献几乎可以忽略，成键主要靠 3s、3p 轨道和 Cl 的 3p 轨道相互作用。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
