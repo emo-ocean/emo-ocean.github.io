@@ -205,8 +205,8 @@ if-else 语句可嵌套使用，用于处理更复杂的条件判断。</p>
                (sel <span class="pl-k">==</span> <span class="pl-c1">2'b10</span>) ? c :
                                 d ;
 <span class="pl-k">endmodule</span></pre></div>
-<p>特点：逻辑一行写完，简洁明了。</p>
-<p>问题：如果分支很多（例如 8:1 MUX 或复杂条件），可读性会迅速下降。</p>
+<p>特点：逻辑一行写完，简洁明了。<br>
+问题：如果分支很多（例如 8:1 MUX 或复杂条件），可读性会迅速下降。</p>
 <p>写法二：reg + always （过程化风格）</p>
 <div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">module</span> <span class="pl-en">mux4_always</span> (
     <span class="pl-k">input</span>  <span class="pl-k">wire</span> [<span class="pl-c1">1</span>:<span class="pl-c1">0</span>] sel,     <span class="pl-c"><span class="pl-c">//</span> 选择信号</span>
@@ -227,8 +227,453 @@ if-else 语句可嵌套使用，用于处理更复杂的条件判断。</p>
 
     <span class="pl-k">assign</span> y <span class="pl-k">=</span> y_reg; <span class="pl-c"><span class="pl-c">//</span> 输出接口仍用 wire</span>
 <span class="pl-k">endmodule</span></pre></div>
-<p>特点：逻辑分支清晰，容易扩展，尤其适合多条件判断或复杂组合逻辑。</p>
-<p>额外一行：用 assign 把 reg 变量传递给 output，保证输出端口仍是 wire 类型。</p></div>
+<p>特点：逻辑分支清晰，容易扩展，尤其适合多条件判断或复杂组合逻辑。<br>
+额外一行：用 assign 把 reg 变量传递给 output，保证输出端口仍是 wire 类型。</p>
+<h3>7.实验部分</h3>
+<p>完成本章的学习后，请读者完成以下实践任务：</p>
+<p>任务一：跑马灯<br>
+用实验环境中提供的三个文件：scroller.v（设计文件）、scroller.xdc（约束文件）和testbench.v（测试文件），构建Vivado工程，完成跑马灯设计的仿真和上板。</p>
+<p>scroller.v:</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+<span class="pl-c"><span class="pl-c">//</span> Company: </span>
+<span class="pl-c"><span class="pl-c">//</span> Engineer: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Create Date: 2017/12/11 00:10:26</span>
+<span class="pl-c"><span class="pl-c">//</span> Design Name: </span>
+<span class="pl-c"><span class="pl-c">//</span> Module Name: scroller</span>
+<span class="pl-c"><span class="pl-c">//</span> Project Name: </span>
+<span class="pl-c"><span class="pl-c">//</span> Target Devices: </span>
+<span class="pl-c"><span class="pl-c">//</span> Tool Versions: </span>
+<span class="pl-c"><span class="pl-c">//</span> Description: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Dependencies: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Revision:</span>
+<span class="pl-c"><span class="pl-c">//</span> Revision 0.01 - File Created</span>
+<span class="pl-c"><span class="pl-c">//</span> Additional Comments:</span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="pl-k">module</span> <span class="pl-en">scroller</span> #(
+    <span class="pl-k">parameter</span> CNT_1S <span class="pl-k">=</span> <span class="pl-c1">27'd100_000_000</span>
+)(
+    <span class="pl-k">input</span>         clk,
+    <span class="pl-k">input</span>         resetn,
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">15</span>:<span class="pl-c1">0</span>] led
+);
+
+<span class="pl-k">reg</span> [<span class="pl-c1">26</span>:<span class="pl-c1">0</span>] cnt;
+<span class="pl-k">wire</span> cnt_eq_1s;
+<span class="pl-k">assign</span> cnt_eq_1s <span class="pl-k">=</span> cnt<span class="pl-k">==</span>CNT_1S;
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk)
+<span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+    <span class="pl-k">begin</span>
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">27'd0</span>;
+    <span class="pl-k">end</span>
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+    <span class="pl-k">begin</span>
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">27'd0</span>;
+    <span class="pl-k">end</span>
+    <span class="pl-k">else</span>
+    <span class="pl-k">begin</span>
+        cnt <span class="pl-k">&lt;=</span> cnt <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+    <span class="pl-k">end</span>
+<span class="pl-k">end</span>
+
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk)
+<span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+    <span class="pl-k">begin</span>
+        led <span class="pl-k">&lt;=</span> <span class="pl-c1">16'hfffe</span>;
+    <span class="pl-k">end</span>
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+    <span class="pl-k">begin</span>
+        led <span class="pl-k">&lt;=</span> {led[<span class="pl-c1">14</span>:<span class="pl-c1">0</span>],led[<span class="pl-c1">15</span>]};
+    <span class="pl-k">end</span>
+<span class="pl-k">end</span>
+<span class="pl-k">endmodule</span></pre></div>
+<p>scroller.xdc:</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate">#ʱź
+set_property PACKAGE_PIN AC19 [get_ports clk]
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets clk]
+create_clock <span class="pl-k">-</span>period <span class="pl-c1">10</span>.<span class="pl-c1">000</span> <span class="pl-k">-</span>name clk <span class="pl-k">-</span>waveform {<span class="pl-c1">0</span>.<span class="pl-c1">000</span> <span class="pl-c1">5</span>.<span class="pl-c1">000</span>} [get_ports clk]
+
+#reset
+set_property PACKAGE_PIN Y3 [get_ports resetn]
+
+#LED
+set_property PACKAGE_PIN K23 [get_ports {led[<span class="pl-c1">0</span>]}]
+set_property PACKAGE_PIN J21 [get_ports {led[<span class="pl-c1">1</span>]}]
+set_property PACKAGE_PIN H23 [get_ports {led[<span class="pl-c1">2</span>]}]
+set_property PACKAGE_PIN J19 [get_ports {led[<span class="pl-c1">3</span>]}]
+set_property PACKAGE_PIN G9 [get_ports {led[<span class="pl-c1">4</span>]}]
+set_property PACKAGE_PIN J26 [get_ports {led[<span class="pl-c1">5</span>]}]
+set_property PACKAGE_PIN J23 [get_ports {led[<span class="pl-c1">6</span>]}]
+set_property PACKAGE_PIN J8 [get_ports {led[<span class="pl-c1">7</span>]}]
+set_property PACKAGE_PIN H8 [get_ports {led[<span class="pl-c1">8</span>]}]
+set_property PACKAGE_PIN G8 [get_ports {led[<span class="pl-c1">9</span>]}]
+set_property PACKAGE_PIN F7 [get_ports {led[<span class="pl-c1">10</span>]}]
+set_property PACKAGE_PIN A4 [get_ports {led[<span class="pl-c1">11</span>]}]
+set_property PACKAGE_PIN A5 [get_ports {led[<span class="pl-c1">12</span>]}]
+set_property PACKAGE_PIN A3 [get_ports {led[<span class="pl-c1">13</span>]}]
+set_property PACKAGE_PIN D5 [get_ports {led[<span class="pl-c1">14</span>]}]
+set_property PACKAGE_PIN H7 [get_ports {led[<span class="pl-c1">15</span>]}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports resetn]
+set_property IOSTANDARD LVCMOS33 [get_ports {led[<span class="pl-k">*</span>]}]</pre></div>
+<p>testbench:</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+<span class="pl-c"><span class="pl-c">//</span> Company: </span>
+<span class="pl-c"><span class="pl-c">//</span> Engineer: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Create Date: 2017/12/11 00:21:48</span>
+<span class="pl-c"><span class="pl-c">//</span> Design Name: </span>
+<span class="pl-c"><span class="pl-c">//</span> Module Name: testbench</span>
+<span class="pl-c"><span class="pl-c">//</span> Project Name: </span>
+<span class="pl-c"><span class="pl-c">//</span> Target Devices: </span>
+<span class="pl-c"><span class="pl-c">//</span> Tool Versions: </span>
+<span class="pl-c"><span class="pl-c">//</span> Description: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Dependencies: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Revision:</span>
+<span class="pl-c"><span class="pl-c">//</span> Revision 0.01 - File Created</span>
+<span class="pl-c"><span class="pl-c">//</span> Additional Comments:</span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+
+
+<span class="pl-k">module</span> <span class="pl-en">testbench</span>(
+
+    );
+<span class="pl-k">reg</span> clk;
+<span class="pl-k">reg</span> resetn;
+<span class="pl-k">initial</span>
+<span class="pl-k">begin</span>
+    <span class="pl-c1">$dumpfile</span>(<span class="pl-s">"dump.vcd"</span>);
+    <span class="pl-c1">$dumpvars</span>;
+    clk <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    resetn <span class="pl-k">=</span> <span class="pl-c1">1'b0</span>;
+    <span class="pl-c1">#200</span>;
+    resetn <span class="pl-k">=</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+    <span class="pl-k">always</span> <span class="pl-c1">#5</span> clk <span class="pl-k">&lt;=</span> <span class="pl-k">~</span>clk;
+    
+    <span class="pl-ent">scroller</span> #(
+        .CNT_1S(  <span class="pl-c1">27'd100</span> )
+    ) <span class="pl-ent">u_scroller</span> (
+        .clk(clk),
+        .resetn(resetn),
+        .led()
+    );
+<span class="pl-k">endmodule</span></pre></div>
+<p>实验二：数码管实验</p>
+<p>在完成“跑马灯”实验后，读者应进一步熟悉FPGA对外设的控制方法。本实验的目标是通过Verilog实现一个简单的数码管显示系统，使开发者能够掌握数码管的显示原理和动态扫描方法。实验硬件平台同样为Artix-7 FBG676 FPGA开发板，实验中使用开发板自带的七段数码管作为输出显示器件。</p>
+<p>实验设计的主要内容是让数码管循环显示数字0~9，或根据输入信号显示特定数字字符。通过Verilog编写驱动模块seg_display.v，设计者需要将输入的4位二进制数转换为七段显示的对应段码，同时利用时钟分频实现数码管动态扫描，从而在多个数码管上实现稳定显示。约束文件seg_display.xdc用于绑定数码管的段选和位选信号至实际引脚，确保设计在硬件上正确显示。测试文件testbench.v则用于验证显示逻辑的正确性，在仿真环境中输出波形观察段码变化是否与预期一致。</p>
+<p>完成设计后，读者需在Vivado中进行功能仿真与时序仿真，确认段码逻辑正确无误。随后下载至开发板，观察数码管是否能够稳定循环显示数字或根据设定变化。通过该实验，读者将理解七段数码管的显示规律、动态扫描原理以及Verilog在时序控制和信号驱动方面的实现方法，为后续更复杂的外设接口实验奠定基础。</p>
+<p>设计文件seg_display.v：</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+<span class="pl-c"><span class="pl-c">//</span> Company: </span>
+<span class="pl-c"><span class="pl-c">//</span> Engineer: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Design Name: Seven Segment Display</span>
+<span class="pl-c"><span class="pl-c">//</span> Module Name: seg_display</span>
+<span class="pl-c"><span class="pl-c">//</span> Target Devices: Artix-7</span>
+<span class="pl-c"><span class="pl-c">//</span> Description: 循环显示0~9的数码管动态扫描显示</span>
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="pl-k">module</span> <span class="pl-en">seg_display</span> #(
+    <span class="pl-k">parameter</span> CNT_1S <span class="pl-k">=</span> <span class="pl-c1">27'd100_000_000</span>
+)(
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> clk,
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> resetn,
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">7</span>:<span class="pl-c1">0</span>] seg,       <span class="pl-c"><span class="pl-c">//</span> 段选输出（a~g,dp）</span>
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">3</span>:<span class="pl-c1">0</span>] an         <span class="pl-c"><span class="pl-c">//</span> 位选输出（4位数码管）</span>
+);
+
+<span class="pl-k">reg</span> [<span class="pl-c1">26</span>:<span class="pl-c1">0</span>] cnt;
+<span class="pl-k">reg</span> [<span class="pl-c1">3</span>:<span class="pl-c1">0</span>]  num;
+<span class="pl-k">wire</span> cnt_eq_1s;
+
+<span class="pl-k">assign</span> cnt_eq_1s <span class="pl-k">=</span> (cnt <span class="pl-k">==</span> CNT_1S <span class="pl-k">-</span> <span class="pl-c1">1</span>);
+
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span>
+        cnt <span class="pl-k">&lt;=</span> cnt <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 数码管显示数字0~9循环变化</span>
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        num <span class="pl-k">&lt;=</span> <span class="pl-c1">4'd0</span>;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+        num <span class="pl-k">&lt;=</span> (num <span class="pl-k">==</span> <span class="pl-c1">4'd9</span>) ? <span class="pl-c1">4'd0</span> : num <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 位选扫描（4位循环）</span>
+<span class="pl-k">reg</span> [<span class="pl-c1">1</span>:<span class="pl-c1">0</span>] scan_sel;
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        scan_sel <span class="pl-k">&lt;=</span> <span class="pl-c1">2'd0</span>;
+    <span class="pl-k">else</span>
+        scan_sel <span class="pl-k">&lt;=</span> scan_sel <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (scan_sel)
+        <span class="pl-c1">2'b00</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1110</span>;
+        <span class="pl-c1">2'b01</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1101</span>;
+        <span class="pl-c1">2'b10</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1011</span>;
+        <span class="pl-c1">2'b11</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b0111</span>;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 段码译码</span>
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (num)
+        <span class="pl-c1">4'd0</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1100_0000</span>;
+        <span class="pl-c1">4'd1</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1001</span>;
+        <span class="pl-c1">4'd2</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1010_0100</span>;
+        <span class="pl-c1">4'd3</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1011_0000</span>;
+        <span class="pl-c1">4'd4</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_1001</span>;
+        <span class="pl-c1">4'd5</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_0010</span>;
+        <span class="pl-c1">4'd6</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1000_0010</span>;
+        <span class="pl-c1">4'd7</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1000</span>;
+        <span class="pl-c1">4'd8</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1000_0000</span>;
+        <span class="pl-c1">4'd9</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_0000</span>;
+        <span class="pl-k">default</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1111</span>;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-k">endmodule</span></pre></div>
+<p>约束文件seg_display.xdc:</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+<span class="pl-c"><span class="pl-c">//</span> Company: </span>
+<span class="pl-c"><span class="pl-c">//</span> Engineer: </span>
+<span class="pl-c"><span class="pl-c">//</span> </span>
+<span class="pl-c"><span class="pl-c">//</span> Design Name: Seven Segment Display</span>
+<span class="pl-c"><span class="pl-c">//</span> Module Name: seg_display</span>
+<span class="pl-c"><span class="pl-c">//</span> Target Devices: Artix-7</span>
+<span class="pl-c"><span class="pl-c">//</span> Description: 循环显示0~9的数码管动态扫描显示</span>
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="pl-k">module</span> <span class="pl-en">seg_display</span> #(
+    <span class="pl-k">parameter</span> CNT_1S <span class="pl-k">=</span> <span class="pl-c1">27'd100_000_000</span>
+)(
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> clk,
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> resetn,
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">7</span>:<span class="pl-c1">0</span>] seg,       <span class="pl-c"><span class="pl-c">//</span> 段选输出（a~g,dp）</span>
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">3</span>:<span class="pl-c1">0</span>] an         <span class="pl-c"><span class="pl-c">//</span> 位选输出（4位数码管）</span>
+);
+
+<span class="pl-k">reg</span> [<span class="pl-c1">26</span>:<span class="pl-c1">0</span>] cnt;
+<span class="pl-k">reg</span> [<span class="pl-c1">3</span>:<span class="pl-c1">0</span>]  num;
+<span class="pl-k">wire</span> cnt_eq_1s;
+
+<span class="pl-k">assign</span> cnt_eq_1s <span class="pl-k">=</span> (cnt <span class="pl-k">==</span> CNT_1S <span class="pl-k">-</span> <span class="pl-c1">1</span>);
+
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span>
+        cnt <span class="pl-k">&lt;=</span> cnt <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 数码管显示数字0~9循环变化</span>
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        num <span class="pl-k">&lt;=</span> <span class="pl-c1">4'd0</span>;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (cnt_eq_1s)
+        num <span class="pl-k">&lt;=</span> (num <span class="pl-k">==</span> <span class="pl-c1">4'd9</span>) ? <span class="pl-c1">4'd0</span> : num <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 位选扫描（4位循环）</span>
+<span class="pl-k">reg</span> [<span class="pl-c1">1</span>:<span class="pl-c1">0</span>] scan_sel;
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        scan_sel <span class="pl-k">&lt;=</span> <span class="pl-c1">2'd0</span>;
+    <span class="pl-k">else</span>
+        scan_sel <span class="pl-k">&lt;=</span> scan_sel <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (scan_sel)
+        <span class="pl-c1">2'b00</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1110</span>;
+        <span class="pl-c1">2'b01</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1101</span>;
+        <span class="pl-c1">2'b10</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b1011</span>;
+        <span class="pl-c1">2'b11</span>: an <span class="pl-k">=</span> <span class="pl-c1">4'b0111</span>;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 段码译码</span>
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (num)
+        <span class="pl-c1">4'd0</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1100_0000</span>;
+        <span class="pl-c1">4'd1</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1001</span>;
+        <span class="pl-c1">4'd2</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1010_0100</span>;
+        <span class="pl-c1">4'd3</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1011_0000</span>;
+        <span class="pl-c1">4'd4</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_1001</span>;
+        <span class="pl-c1">4'd5</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_0010</span>;
+        <span class="pl-c1">4'd6</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1000_0010</span>;
+        <span class="pl-c1">4'd7</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1000</span>;
+        <span class="pl-c1">4'd8</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1000_0000</span>;
+        <span class="pl-c1">4'd9</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1001_0000</span>;
+        <span class="pl-k">default</span>: seg <span class="pl-k">=</span> <span class="pl-c1">8'b1111_1111</span>;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-k">endmodule</span></pre></div>
+<p>仿真文件testbench.v:</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+
+<span class="pl-k">module</span> <span class="pl-en">testbench_seg</span>();
+<span class="pl-k">reg</span> clk;
+<span class="pl-k">reg</span> resetn;
+
+<span class="pl-k">initial</span> <span class="pl-k">begin</span>
+    clk <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">forever</span> <span class="pl-c1">#5</span> clk <span class="pl-k">=</span> <span class="pl-k">~</span>clk;   <span class="pl-c"><span class="pl-c">//</span> 100MHz</span>
+<span class="pl-k">end</span>
+
+<span class="pl-k">initial</span> <span class="pl-k">begin</span>
+    resetn <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    <span class="pl-c1">#100</span>;
+    resetn <span class="pl-k">=</span> <span class="pl-c1">1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-ent">seg_display</span> #(
+    .CNT_1S(<span class="pl-c1">27'd100</span>)
+) <span class="pl-ent">u_seg_display</span> (
+    .clk(clk),
+    .resetn(resetn),
+    .seg(),
+    .an()
+);
+
+<span class="pl-k">endmodule</span></pre></div>
+<p>实验三：状态机实验</p>
+<p>在掌握基本的逻辑控制与外设驱动之后，状态机实验旨在帮助读者理解有限状态机（Finite State Machine，FSM）在数字电路设计中的作用与实现方法。本实验以Artix-7 FBG676开发板为平台，通过Verilog实现一个典型的有限状态机控制系统，展示如何利用状态机实现有序控制与逻辑判断。</p>
+<p>实验内容可以设计为一个简单的交通灯控制器、自动门开关控制器或按键输入序列识别器。以交通灯控制器为例，设计者需要定义若干个状态（如红绿灯），并根据时钟计数或传感输入在状态之间进行转换。每个状态下输出不同的控制信号，用以点亮对应颜色的LED灯。Verilog模块state_machine.v负责描述状态转移逻辑与输出控制，状态转移条件通过时钟和复位信号实现同步。约束文件state_machine.xdc完成输入按键与LED输出引脚的绑定，而testbench.v通过仿真输入信号变化来验证状态转移的正确性与输出响应是否符合预期。</p>
+<p>在Vivado中完成编译与仿真后，将程序下载至开发板，观察LED灯的变化是否符合交通灯的工作规律。通过此实验，读者不仅能够理解有限状态机的设计方法，还能体会其在复杂控制逻辑中的核心地位。掌握状态编码、状态转移图设计以及在Verilog中使用组合逻辑与时序逻辑描述FSM的技巧，将为后续系统控制类设计打下坚实基础。</p>
+<p>设计文件：traffic_fsm.v</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+<span class="pl-c"><span class="pl-c">//</span> Design Name: FSM Traffic Light Controller</span>
+<span class="pl-c"><span class="pl-c">//</span> Description: 红绿灯状态机控制实验</span>
+<span class="pl-c"><span class="pl-c">//</span>////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="pl-k">module</span> <span class="pl-en">traffic_fsm</span> #(
+    <span class="pl-k">parameter</span> CNT_1S <span class="pl-k">=</span> <span class="pl-c1">27'd100_000_000</span>
+)(
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> clk,
+    <span class="pl-k">input</span>  <span class="pl-k">wire</span> resetn,
+    <span class="pl-k">output</span> <span class="pl-k">reg</span> [<span class="pl-c1">2</span>:<span class="pl-c1">0</span>] led_rgy   <span class="pl-c"><span class="pl-c">//</span> {红, 黄, 绿}</span>
+);
+
+<span class="pl-k">reg</span> [<span class="pl-c1">26</span>:<span class="pl-c1">0</span>] cnt;
+<span class="pl-k">wire</span> tick <span class="pl-k">=</span> (cnt <span class="pl-k">==</span> CNT_1S <span class="pl-k">-</span> <span class="pl-c1">1</span>);
+
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (tick)
+        cnt <span class="pl-k">&lt;=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">else</span>
+        cnt <span class="pl-k">&lt;=</span> cnt <span class="pl-k">+</span> <span class="pl-c1">1'b1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> FSM 状态定义</span>
+typedef enum <span class="pl-k">reg</span> [<span class="pl-c1">1</span>:<span class="pl-c1">0</span>] {
+    S_RED   <span class="pl-k">=</span> <span class="pl-c1">2'd0</span>,
+    S_GREEN <span class="pl-k">=</span> <span class="pl-c1">2'd1</span>,
+    S_YELLOW<span class="pl-k">=</span> <span class="pl-c1">2'd2</span>
+} state_t;
+
+state_t state, next_state;
+
+<span class="pl-c"><span class="pl-c">//</span> 状态转移逻辑</span>
+<span class="pl-k">always</span> @(<span class="pl-k">posedge</span> clk <span class="pl-k">or</span> <span class="pl-k">negedge</span> resetn) <span class="pl-k">begin</span>
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>resetn)
+        state <span class="pl-k">&lt;=</span> S_RED;
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (tick)
+        state <span class="pl-k">&lt;=</span> next_state;
+<span class="pl-k">end</span>
+
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (state)
+        S_RED:    next_state <span class="pl-k">=</span> S_GREEN;
+        S_GREEN:  next_state <span class="pl-k">=</span> S_YELLOW;
+        S_YELLOW: next_state <span class="pl-k">=</span> S_RED;
+        <span class="pl-k">default</span>:  next_state <span class="pl-k">=</span> S_RED;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-c"><span class="pl-c">//</span> 输出控制</span>
+<span class="pl-k">always</span> @(<span class="pl-k">*</span>) <span class="pl-k">begin</span>
+    <span class="pl-k">case</span> (state)
+        S_RED:    led_rgy <span class="pl-k">=</span> <span class="pl-c1">3'b100</span>;
+        S_GREEN:  led_rgy <span class="pl-k">=</span> <span class="pl-c1">3'b001</span>;
+        S_YELLOW: led_rgy <span class="pl-k">=</span> <span class="pl-c1">3'b010</span>;
+        <span class="pl-k">default</span>:  led_rgy <span class="pl-k">=</span> <span class="pl-c1">3'b000</span>;
+    <span class="pl-k">endcase</span>
+<span class="pl-k">end</span>
+
+<span class="pl-k">endmodule</span></pre></div>
+<p>约束文件：traffic_fsm.xdc</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"># 时钟输入
+set_property PACKAGE_PIN AC19 [get_ports clk]
+create_clock <span class="pl-k">-</span>period <span class="pl-c1">10</span>.<span class="pl-c1">000</span> [get_ports clk]
+
+# 复位输入
+set_property PACKAGE_PIN Y3 [get_ports resetn]
+
+# LED 输出（红、黄、绿）
+set_property PACKAGE_PIN K23 [get_ports {led_rgy[<span class="pl-c1">0</span>]}]
+set_property PACKAGE_PIN J21 [get_ports {led_rgy[<span class="pl-c1">1</span>]}]
+set_property PACKAGE_PIN H23 [get_ports {led_rgy[<span class="pl-c1">2</span>]}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports resetn]
+set_property IOSTANDARD LVCMOS33 [get_ports {led_rgy[<span class="pl-k">*</span>]}]</pre></div>
+<p>仿真文件：testbench.v</p>
+<div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">`timescale</span> 1ns <span class="pl-k">/</span> 1ps
+
+<span class="pl-k">module</span> <span class="pl-en">testbench_fsm</span>();
+<span class="pl-k">reg</span> clk;
+<span class="pl-k">reg</span> resetn;
+
+<span class="pl-k">initial</span> <span class="pl-k">begin</span>
+    clk <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    <span class="pl-k">forever</span> <span class="pl-c1">#5</span> clk <span class="pl-k">=</span> <span class="pl-k">~</span>clk;
+<span class="pl-k">end</span>
+
+<span class="pl-k">initial</span> <span class="pl-k">begin</span>
+    resetn <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    <span class="pl-c1">#50</span>;
+    resetn <span class="pl-k">=</span> <span class="pl-c1">1</span>;
+<span class="pl-k">end</span>
+
+<span class="pl-ent">traffic_fsm</span> #(
+    .CNT_1S(<span class="pl-c1">27'd50</span>)
+) <span class="pl-ent">u_traffic_fsm</span> (
+    .clk(clk),
+    .resetn(resetn),
+    .led_rgy()
+);
+
+<span class="pl-k">endmodule</span></pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

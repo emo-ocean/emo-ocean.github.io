@@ -189,7 +189,6 @@ endmodule
 ```
 
 特点：逻辑一行写完，简洁明了。
-
 问题：如果分支很多（例如 8:1 MUX 或复杂条件），可读性会迅速下降。
 
 写法二：reg + always （过程化风格）
@@ -216,5 +215,485 @@ endmodule
 ```
 
 特点：逻辑分支清晰，容易扩展，尤其适合多条件判断或复杂组合逻辑。
-
 额外一行：用 assign 把 reg 变量传递给 output，保证输出端口仍是 wire 类型。
+
+### 7.实验部分
+完成本章的学习后，请读者完成以下实践任务：
+
+任务一：跑马灯
+用实验环境中提供的三个文件：scroller.v（设计文件）、scroller.xdc（约束文件）和testbench.v（测试文件），构建Vivado工程，完成跑马灯设计的仿真和上板。
+
+scroller.v:
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2017/12/11 00:10:26
+// Design Name: 
+// Module Name: scroller
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module scroller #(
+    parameter CNT_1S = 27'd100_000_000
+)(
+    input         clk,
+    input         resetn,
+    output reg [15:0] led
+);
+
+reg [26:0] cnt;
+wire cnt_eq_1s;
+assign cnt_eq_1s = cnt==CNT_1S;
+always @(posedge clk)
+begin
+    if (!resetn)
+    begin
+        cnt <= 27'd0;
+    end
+    else if (cnt_eq_1s)
+    begin
+        cnt <= 27'd0;
+    end
+    else
+    begin
+        cnt <= cnt + 1'b1;
+    end
+end
+
+always @(posedge clk)
+begin
+    if (!resetn)
+    begin
+        led <= 16'hfffe;
+    end
+    else if (cnt_eq_1s)
+    begin
+        led <= {led[14:0],led[15]};
+    end
+end
+endmodule
+```
+
+scroller.xdc:
+```verilog
+#ʱź
+set_property PACKAGE_PIN AC19 [get_ports clk]
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets clk]
+create_clock -period 10.000 -name clk -waveform {0.000 5.000} [get_ports clk]
+
+#reset
+set_property PACKAGE_PIN Y3 [get_ports resetn]
+
+#LED
+set_property PACKAGE_PIN K23 [get_ports {led[0]}]
+set_property PACKAGE_PIN J21 [get_ports {led[1]}]
+set_property PACKAGE_PIN H23 [get_ports {led[2]}]
+set_property PACKAGE_PIN J19 [get_ports {led[3]}]
+set_property PACKAGE_PIN G9 [get_ports {led[4]}]
+set_property PACKAGE_PIN J26 [get_ports {led[5]}]
+set_property PACKAGE_PIN J23 [get_ports {led[6]}]
+set_property PACKAGE_PIN J8 [get_ports {led[7]}]
+set_property PACKAGE_PIN H8 [get_ports {led[8]}]
+set_property PACKAGE_PIN G8 [get_ports {led[9]}]
+set_property PACKAGE_PIN F7 [get_ports {led[10]}]
+set_property PACKAGE_PIN A4 [get_ports {led[11]}]
+set_property PACKAGE_PIN A5 [get_ports {led[12]}]
+set_property PACKAGE_PIN A3 [get_ports {led[13]}]
+set_property PACKAGE_PIN D5 [get_ports {led[14]}]
+set_property PACKAGE_PIN H7 [get_ports {led[15]}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports resetn]
+set_property IOSTANDARD LVCMOS33 [get_ports {led[*]}]
+```
+
+testbench:
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2017/12/11 00:21:48
+// Design Name: 
+// Module Name: testbench
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module testbench(
+
+    );
+reg clk;
+reg resetn;
+initial
+begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    clk = 0;
+    resetn = 1'b0;
+    #200;
+    resetn = 1'b1;
+end
+    always #5 clk <= ~clk;
+    
+    scroller #(
+        .CNT_1S(  27'd100 )
+    ) u_scroller (
+        .clk(clk),
+        .resetn(resetn),
+        .led()
+    );
+endmodule
+```
+
+实验二：数码管实验
+
+在完成“跑马灯”实验后，读者应进一步熟悉FPGA对外设的控制方法。本实验的目标是通过Verilog实现一个简单的数码管显示系统，使开发者能够掌握数码管的显示原理和动态扫描方法。实验硬件平台同样为Artix-7 FBG676 FPGA开发板，实验中使用开发板自带的七段数码管作为输出显示器件。
+
+实验设计的主要内容是让数码管循环显示数字0~9，或根据输入信号显示特定数字字符。通过Verilog编写驱动模块seg_display.v，设计者需要将输入的4位二进制数转换为七段显示的对应段码，同时利用时钟分频实现数码管动态扫描，从而在多个数码管上实现稳定显示。约束文件seg_display.xdc用于绑定数码管的段选和位选信号至实际引脚，确保设计在硬件上正确显示。测试文件testbench.v则用于验证显示逻辑的正确性，在仿真环境中输出波形观察段码变化是否与预期一致。
+
+完成设计后，读者需在Vivado中进行功能仿真与时序仿真，确认段码逻辑正确无误。随后下载至开发板，观察数码管是否能够稳定循环显示数字或根据设定变化。通过该实验，读者将理解七段数码管的显示规律、动态扫描原理以及Verilog在时序控制和信号驱动方面的实现方法，为后续更复杂的外设接口实验奠定基础。
+
+设计文件seg_display.v：
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Design Name: Seven Segment Display
+// Module Name: seg_display
+// Target Devices: Artix-7
+// Description: 循环显示0~9的数码管动态扫描显示
+//////////////////////////////////////////////////////////////////////////////////
+
+module seg_display #(
+    parameter CNT_1S = 27'd100_000_000
+)(
+    input  wire clk,
+    input  wire resetn,
+    output reg [7:0] seg,       // 段选输出（a~g,dp）
+    output reg [3:0] an         // 位选输出（4位数码管）
+);
+
+reg [26:0] cnt;
+reg [3:0]  num;
+wire cnt_eq_1s;
+
+assign cnt_eq_1s = (cnt == CNT_1S - 1);
+
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        cnt <= 0;
+    else if (cnt_eq_1s)
+        cnt <= 0;
+    else
+        cnt <= cnt + 1'b1;
+end
+
+// 数码管显示数字0~9循环变化
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        num <= 4'd0;
+    else if (cnt_eq_1s)
+        num <= (num == 4'd9) ? 4'd0 : num + 1'b1;
+end
+
+// 位选扫描（4位循环）
+reg [1:0] scan_sel;
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        scan_sel <= 2'd0;
+    else
+        scan_sel <= scan_sel + 1'b1;
+end
+
+always @(*) begin
+    case (scan_sel)
+        2'b00: an = 4'b1110;
+        2'b01: an = 4'b1101;
+        2'b10: an = 4'b1011;
+        2'b11: an = 4'b0111;
+    endcase
+end
+
+// 段码译码
+always @(*) begin
+    case (num)
+        4'd0: seg = 8'b1100_0000;
+        4'd1: seg = 8'b1111_1001;
+        4'd2: seg = 8'b1010_0100;
+        4'd3: seg = 8'b1011_0000;
+        4'd4: seg = 8'b1001_1001;
+        4'd5: seg = 8'b1001_0010;
+        4'd6: seg = 8'b1000_0010;
+        4'd7: seg = 8'b1111_1000;
+        4'd8: seg = 8'b1000_0000;
+        4'd9: seg = 8'b1001_0000;
+        default: seg = 8'b1111_1111;
+    endcase
+end
+
+endmodule
+```
+
+约束文件seg_display.xdc:
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Design Name: Seven Segment Display
+// Module Name: seg_display
+// Target Devices: Artix-7
+// Description: 循环显示0~9的数码管动态扫描显示
+//////////////////////////////////////////////////////////////////////////////////
+
+module seg_display #(
+    parameter CNT_1S = 27'd100_000_000
+)(
+    input  wire clk,
+    input  wire resetn,
+    output reg [7:0] seg,       // 段选输出（a~g,dp）
+    output reg [3:0] an         // 位选输出（4位数码管）
+);
+
+reg [26:0] cnt;
+reg [3:0]  num;
+wire cnt_eq_1s;
+
+assign cnt_eq_1s = (cnt == CNT_1S - 1);
+
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        cnt <= 0;
+    else if (cnt_eq_1s)
+        cnt <= 0;
+    else
+        cnt <= cnt + 1'b1;
+end
+
+// 数码管显示数字0~9循环变化
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        num <= 4'd0;
+    else if (cnt_eq_1s)
+        num <= (num == 4'd9) ? 4'd0 : num + 1'b1;
+end
+
+// 位选扫描（4位循环）
+reg [1:0] scan_sel;
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        scan_sel <= 2'd0;
+    else
+        scan_sel <= scan_sel + 1'b1;
+end
+
+always @(*) begin
+    case (scan_sel)
+        2'b00: an = 4'b1110;
+        2'b01: an = 4'b1101;
+        2'b10: an = 4'b1011;
+        2'b11: an = 4'b0111;
+    endcase
+end
+
+// 段码译码
+always @(*) begin
+    case (num)
+        4'd0: seg = 8'b1100_0000;
+        4'd1: seg = 8'b1111_1001;
+        4'd2: seg = 8'b1010_0100;
+        4'd3: seg = 8'b1011_0000;
+        4'd4: seg = 8'b1001_1001;
+        4'd5: seg = 8'b1001_0010;
+        4'd6: seg = 8'b1000_0010;
+        4'd7: seg = 8'b1111_1000;
+        4'd8: seg = 8'b1000_0000;
+        4'd9: seg = 8'b1001_0000;
+        default: seg = 8'b1111_1111;
+    endcase
+end
+
+endmodule
+```
+
+仿真文件testbench.v:
+```verilog
+`timescale 1ns / 1ps
+
+module testbench_seg();
+reg clk;
+reg resetn;
+
+initial begin
+    clk = 0;
+    forever #5 clk = ~clk;   // 100MHz
+end
+
+initial begin
+    resetn = 0;
+    #100;
+    resetn = 1;
+end
+
+seg_display #(
+    .CNT_1S(27'd100)
+) u_seg_display (
+    .clk(clk),
+    .resetn(resetn),
+    .seg(),
+    .an()
+);
+
+endmodule
+```
+实验三：状态机实验
+
+在掌握基本的逻辑控制与外设驱动之后，状态机实验旨在帮助读者理解有限状态机（Finite State Machine，FSM）在数字电路设计中的作用与实现方法。本实验以Artix-7 FBG676开发板为平台，通过Verilog实现一个典型的有限状态机控制系统，展示如何利用状态机实现有序控制与逻辑判断。
+
+实验内容可以设计为一个简单的交通灯控制器、自动门开关控制器或按键输入序列识别器。以交通灯控制器为例，设计者需要定义若干个状态（如红绿灯），并根据时钟计数或传感输入在状态之间进行转换。每个状态下输出不同的控制信号，用以点亮对应颜色的LED灯。Verilog模块state_machine.v负责描述状态转移逻辑与输出控制，状态转移条件通过时钟和复位信号实现同步。约束文件state_machine.xdc完成输入按键与LED输出引脚的绑定，而testbench.v通过仿真输入信号变化来验证状态转移的正确性与输出响应是否符合预期。
+
+在Vivado中完成编译与仿真后，将程序下载至开发板，观察LED灯的变化是否符合交通灯的工作规律。通过此实验，读者不仅能够理解有限状态机的设计方法，还能体会其在复杂控制逻辑中的核心地位。掌握状态编码、状态转移图设计以及在Verilog中使用组合逻辑与时序逻辑描述FSM的技巧，将为后续系统控制类设计打下坚实基础。
+
+设计文件：traffic_fsm.v
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Design Name: FSM Traffic Light Controller
+// Description: 红绿灯状态机控制实验
+//////////////////////////////////////////////////////////////////////////////////
+
+module traffic_fsm #(
+    parameter CNT_1S = 27'd100_000_000
+)(
+    input  wire clk,
+    input  wire resetn,
+    output reg [2:0] led_rgy   // {红, 黄, 绿}
+);
+
+reg [26:0] cnt;
+wire tick = (cnt == CNT_1S - 1);
+
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        cnt <= 0;
+    else if (tick)
+        cnt <= 0;
+    else
+        cnt <= cnt + 1'b1;
+end
+
+// FSM 状态定义
+typedef enum reg [1:0] {
+    S_RED   = 2'd0,
+    S_GREEN = 2'd1,
+    S_YELLOW= 2'd2
+} state_t;
+
+state_t state, next_state;
+
+// 状态转移逻辑
+always @(posedge clk or negedge resetn) begin
+    if (!resetn)
+        state <= S_RED;
+    else if (tick)
+        state <= next_state;
+end
+
+always @(*) begin
+    case (state)
+        S_RED:    next_state = S_GREEN;
+        S_GREEN:  next_state = S_YELLOW;
+        S_YELLOW: next_state = S_RED;
+        default:  next_state = S_RED;
+    endcase
+end
+
+// 输出控制
+always @(*) begin
+    case (state)
+        S_RED:    led_rgy = 3'b100;
+        S_GREEN:  led_rgy = 3'b001;
+        S_YELLOW: led_rgy = 3'b010;
+        default:  led_rgy = 3'b000;
+    endcase
+end
+
+endmodule
+```
+
+约束文件：traffic_fsm.xdc
+```verilog
+# 时钟输入
+set_property PACKAGE_PIN AC19 [get_ports clk]
+create_clock -period 10.000 [get_ports clk]
+
+# 复位输入
+set_property PACKAGE_PIN Y3 [get_ports resetn]
+
+# LED 输出（红、黄、绿）
+set_property PACKAGE_PIN K23 [get_ports {led_rgy[0]}]
+set_property PACKAGE_PIN J21 [get_ports {led_rgy[1]}]
+set_property PACKAGE_PIN H23 [get_ports {led_rgy[2]}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports resetn]
+set_property IOSTANDARD LVCMOS33 [get_ports {led_rgy[*]}]
+```
+
+仿真文件：testbench.v
+```verilog
+`timescale 1ns / 1ps
+
+module testbench_fsm();
+reg clk;
+reg resetn;
+
+initial begin
+    clk = 0;
+    forever #5 clk = ~clk;
+end
+
+initial begin
+    resetn = 0;
+    #50;
+    resetn = 1;
+end
+
+traffic_fsm #(
+    .CNT_1S(27'd50)
+) u_traffic_fsm (
+    .clk(clk),
+    .resetn(resetn),
+    .led_rgy()
+);
+
+endmodule
+```
