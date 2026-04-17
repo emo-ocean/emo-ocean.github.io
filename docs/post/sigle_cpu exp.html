@@ -93,7 +93,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 预计通过所有实验（六个章节）实现一个支持10条指令的单周期cpu，其中可以选择三种不同的指令集对单周期cpu进行逐步实现，关于指令的讲解在ISA部分中查看。</p>
 <p>1.1架构说明<br>
 本实验设计搭建了一个基于模块化设计的简易 CPU 系统，其顶层模块为 cpu_sys。该系统通过模块实例化的方式，集成了处理器核心（cpu）、指令存储器（IM）、数据存储器（DM）以及通用寄存器文件（regfile）四个核心组件。各模块之间通过标准的信号接口进行通信，实现了简易指令获取、执行与数据读写操作的基本功能。其中cpu需要学生具体设计实现。</p>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/0ea7e236-afd5-43ec-b222-c2eb18741832"><img width="400" height="450" alt="Image" src="https://github.com/user-attachments/assets/0ea7e236-afd5-43ec-b222-c2eb18741832" style="max-width: 100%; height: auto; max-height: 450px;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/0ea7e236-afd5-43ec-b222-c2eb18741832"><img width="400" height="450" alt="Image" src="https://github.com/user-attachments/assets/0ea7e236-afd5-43ec-b222-c2eb18741832" style="max-width: 100%; height: auto; max-height: 450px;; aspect-ratio: 400 / 450; background-color: var(--bgColor-muted); border-radius: 6px; display: block" class="js-gh-image-fallback"></a></p>
 <p>cpu_sys顶层代码：</p>
 <div class="highlight highlight-source-verilog"><pre class="notranslate"><span class="pl-k">module</span> <span class="pl-en">cpu_sys</span>(
    <span class="pl-k">input</span>    <span class="pl-k">wire</span>          clk,
