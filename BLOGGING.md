@@ -5,6 +5,7 @@
 - [博客首页](https://emo-ocean.github.io/)
 - [文章与标签](https://emo-ocean.github.io/tag.html)
 - [RSS 订阅](https://emo-ocean.github.io/rss.xml)
+- [构建记录](https://github.com/emo-ocean/emo-ocean.github.io/actions/workflows/Gmeek.yml)
 
 ## 内容与配置
 
